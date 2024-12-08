@@ -154,11 +154,17 @@
 													<td class="cell"><span class="truncate">{{ application.get_leave_type_display }}</span></td>
 													<td class="cell">{{ application.from_date }}</td>
 													<td class="cell"><span class="cell-data">{{ application.to_date }}</span></td>
-													<td class="cell"><span class="cell-data"></span>{{ application.description }}<span ></span></td>
-													<td class="cell"><span class="badge bg-warning">{{ application.status }}</span></td>
+													<td class="cell"><span class="cell-data"></span>{{ application.admin_remarks|default:"N/A" }}<span ></span></td>
+													
 													<!-- <td class="cell">{{ application.admin_remarks|default:"N/A" }}</td> -->
-													<td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-												</tr>
+													<td class="cell">
+                                                    <span class="badge {% if application.status == 'Pending' %}bg-warning{% elif application.status == 'Approved' %}bg-success{% elif application.status == 'Rejected' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                                        {{ application.status }}
+                                                    </span>
+                                                </td>
+                                                <td class="cell">
+                                                    <a class="btn-sm app-btn-secondary" href="#">View</a>
+                                                </td>
 												{% endfor %}
             									{% else %}
 												<tr>
