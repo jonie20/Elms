@@ -1,10 +1,14 @@
+from datetime import date
+
 from django.contrib import messages
+
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
 from user.models import Account, LeaveApplication
+from datetime import datetime, timedelta
 
 class RegisterView(View):
     def get(self, request):
@@ -64,23 +68,44 @@ def apply_leave(request):
         to_date = request.POST.get('to_date')
         description = request.POST.get('description')
 
-        # Validate fields (basic validation example)
-        if not leave_type or not from_date or not to_date or not description:
+        # Convert dates from strings to datetime objects
+        try:
+            from_date_obj = datetime.strptime(from_date, '%Y-%m-%d').date()
+            to_date_obj = datetime.strptime(to_date, '%Y-%m-%d').date()
+        except ValueError:
+            messages.error(request, "Invalid date format. Please try again.")
+            return redirect('apply_leave')
+
+        # Get current date and one month ahead
+        current_date = datetime.now().date()
+        max_date = current_date + timedelta(days=30)
+
+        # Validate dates
+        if not leave_type or not description:
             messages.error(request, "All fields are required. Please try again.")
-            return redirect('apply_leave.html')
-        else:
-            # Save the leave application
-            leave_application = LeaveApplication(
-                leave_type=leave_type,
-                from_date=from_date,
-                to_date=to_date,
-                description=description,
-                employee=request.user
-            )
-            leave_application.save()
-            messages.success(request, "Leave application submitted successfully.")
-            return redirect('index.html')  # Redirect to a leave list or dashboard
-    
+            return redirect('apply_leave')
+        elif from_date_obj < current_date:
+            messages.error(request, "Start date cannot be in the past. Please select a valid date.")
+            return redirect('apply_leave')
+        elif from_date_obj > max_date:
+            messages.error(request, "Start date cannot be more than 1 month from today.")
+            return redirect('apply_leave')
+        elif to_date_obj < from_date_obj:
+            messages.error(request, "End date cannot be earlier than the start date.")
+            return redirect('apply_leave')
+
+        # Save the leave application
+        leave_application = LeaveApplication(
+            leave_type=leave_type,
+            from_date=from_date_obj,
+            to_date=to_date_obj,
+            description=description,
+            employee=request.user
+        )
+        leave_application.save()
+        messages.success(request, "Leave application submitted successfully.")
+        return redirect('dash')  # Redirect to a leave list or dashboard
+
     return render(request, 'apply_leave.html')
         
 
