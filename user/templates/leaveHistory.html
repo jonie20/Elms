@@ -58,7 +58,7 @@
                                                 <td class="cell">{{ application.get_leave_type_display }}</td>
                                                 <td class="cell">{{ application.from_date }}</td>
                                                 <td class="cell">{{ application.to_date }}</td>
-                                                <td class="cell">{{ application.manager_comments|default:"N/A" }}</td>
+                                                <td class="cell">{{ application.admin_remarks|default:"N/A" }}</td>
                                                 <td class="cell">
                                                     <span class="badge {% if application.status == 'Pending' %}bg-warning{% elif application.status == 'Approved' %}bg-success{% elif application.status == 'Rejected' %}bg-danger{% else %}bg-secondary{% endif %}">
                                                         {{ application.status }}
