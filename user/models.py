@@ -72,7 +72,7 @@ class LeaveApplication(models.Model):
     description = models.TextField(verbose_name="Description")
     posting_date = models.DateTimeField(auto_now_add=True, verbose_name="Posting Date")
     admin_remarks = models.TextField(null=True, blank=True, verbose_name="Admin Remarks")
-    admin_remark_date = models.DateTimeField(null=True, blank=True, verbose_name="Admin Remark Date")
+    admin_remark_date = models.DateTimeField(null=True,auto_now_add=True, verbose_name="admin date")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending', verbose_name="Status")
     employee = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="Employee")
 
