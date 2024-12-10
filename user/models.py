@@ -31,6 +31,7 @@ class AccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=80)
+    profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
     email = models.EmailField(max_length=110, unique=True)
     username = models.CharField(max_length=50, unique=True)
     date_joined = models.DateTimeField(verbose_name='user date joined',auto_now_add=True)
