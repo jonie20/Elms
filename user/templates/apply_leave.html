@@ -21,12 +21,8 @@
                         <div class="col-12 ">
                             <div class="app-card app-card-settings shadow-sm p-4">
 
-                                <!-- <div class="app-card-body">
-								{% if messages %}
-									{% for message in messages %}
-										<p style="color: {{ message.tags }}">{{ message }}</p>
-									{% endfor %}
-								{% endif %} -->
+{#                                <div class="app-card-body"><#}
+								{% include 'alerts.html' %}
 
 
                                 <form class="settings-form row" method="POST">
@@ -113,6 +109,15 @@
         </div>
         <!--//app-wrapper-->
     </header>>
-
+    <script> // Check if there is a success message, then delay redirect
+  {% if messages %}
+    {% for message in messages %}
+      {% if "success" in message.tags %}
+        setTimeout(function() {
+          window.location.href = "{% url 'home' %}";
+        }, 3000); // Delay for 5000 ms (5 seconds)
+      {% endif %}
+    {% endfor %}
+  {% endif %}</script>
 {% endblock %}
 {% block title %} home {% endblock %}

@@ -135,9 +135,8 @@ AUTHENTICATION_BACKEND = ['django.contrib.auth.backends.ModelBackend',
 
 
 MESSAGE_TAGS = {
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
-
+    messages.ERROR: "alert-danger",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.INFO: "alert-info",
 }
