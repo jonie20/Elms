@@ -138,7 +138,7 @@
                                                             </span>
                                                         </td>
                                                         <td class="cell">
-                                                            <a class="btn-sm app-btn-secondary" href="#">View</a>
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -157,6 +157,43 @@
 
                 </div>
             </div>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Payment Information</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="app-card app-card-settings shadow-sm p-4">
+                                
+                                <div class="app-card-body">
+                                    <form class="settings-form">
+                                        <div class="mb-3">
+                                            <label for="setting-input-1" class="form-label">Customer Name<span class="ms-2" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus"  data-bs-placement="top" data-bs-content="This is a Bootstrap popover example. You can use popover to provide extra info."><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+      <circle cx="8" cy="4.5" r="1"/>
+    </svg></span></label>
+                                            <input type="text" class="form-control" id="setting-input-1" placeholder="John Doe" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="setting-input-2" class="form-label">Phone Number</label>
+                                            <p><strong>Admin Remarks:</strong> <span id="modalAdminRemarks"></span></p>
+                                        <button type="submit" class="btn app-btn-primary" >Pay Now</button>
+                                    </form>
+                                </div><!--//app-card-body-->
+                                
+                            </div>
+                        </div>
+                        <!-- <div class="modal-footer">
+                            <button type="button" class="btn app-btn-secondary" data-bs-dismiss="modal"> Close</button>
+                            <button type="button" class="btn app-btn-primary">Pay Now</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
 
             <footer class="app-footer">
                 <div class="container text-center py-3">
@@ -166,5 +203,23 @@
         </div>
     </div>
 </header>
+
+<script>
+    // JavaScript to handle modal data population
+    const staticBackdropModal = document.getElementById('staticBackdrop');
+
+    staticBackdropModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        const button = event.relatedTarget;
+
+        // Extract data from attributes
+        const adminRemarks = button.getAttribute('data-admin-remarks');
+
+        // Update modal content
+        document.getElementById('modalAdminRemarks').textContent = adminRemarks;
+    });
+</script>    
+</script>
+
 {% endblock %}
 {% block title %}Home{% endblock %}
