@@ -132,16 +132,29 @@
             today = yyyy + '-' + mm +'-'+ dd;
             document.getElementById("myDate").setAttribute("min", today);
         } 
-		
+
+
 		function setMinDate() {
-			// Get the selected date from the first date input
+			// Get the selected date from the "Start Date" input
 			var selectedDate = document.getElementById("myDate").value;
-	
+		
 			if (selectedDate) {
-				// Set the minimum date of the second date input
-				document.getElementById("endDate").setAttribute("min", selectedDate);
+				// Convert the selected date to a Date object
+				var startDate = new Date(selectedDate);
+		
+				// Add 1 day to the selected date
+				startDate.setDate(startDate.getDate() + 1);
+		
+				// Format the date back to YYYY-MM-DD
+				var dd = String(startDate.getDate()).padStart(2, '0');
+				var mm = String(startDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+				var yyyy = startDate.getFullYear();
+				var nextDay = yyyy + '-' + mm + '-' + dd;
+		
+				// Set the minimum date of the "End Date" input to the next day
+				document.getElementById("endDate").setAttribute("min", nextDay);
 			}
-		}
+		}		
   
  
  
