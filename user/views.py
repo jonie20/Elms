@@ -144,3 +144,41 @@ def leavehistory(request):
 
     return render(request, 'leaveHistory.html',
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
+def board(request):
+    applications = LeaveApplication.objects.filter(employee=request.user).order_by('-id')
+    
+
+    return render(request, 'aaa/index.html', {'applications': applications})
+def add_employee(request):
+    if request.method == 'POST':
+        # EmpId = request.POST.get('EmplId')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        # phone_number = request.POST.get('phone_number')
+        # date_of_birth = request.POST.get('date_of_birth')
+        # gender = request.POST.get('from_date')
+        # department = request.POST.get('from_date')
+
+        
+        query = Account( first_name = first_name, last_name = last_name, email = email )
+        query.save()
+
+    return render(request, 'aaa/employee.html')
+
+def manage_employee(request):
+    Employees = Account.objects.all().order_by('-id')
+    # context = {
+    #     'Employees' : Employees
+    # }
+
+
+
+    return render(request, 'aaa/manageEmpl.html', {'Employees': Employees})
+def add_notice(request):
+    # leave_applications = LeaveApplication.objects.all()
+    # context = {
+    #         'leave_applications': leave_applications,
+    # }
+
+    return render(request, 'aaa/notice.html')
