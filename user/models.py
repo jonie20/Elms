@@ -37,6 +37,13 @@ class AccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=80)
+    id_number = models.CharField(max_length=20, unique=True, null=True)
+    personal_number = models.CharField(max_length=20, unique=True, null=True)
+    designation = models.CharField(max_length=50,null=True,blank=True)
+    gender = models.CharField(
+        max_length=10,
+        choices=[('Male', 'Male'), ('Female', 'Female')],null=True,
+    )
     profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
     email = models.EmailField(max_length=110, unique=True)
     username = models.CharField(max_length=50, unique=True)

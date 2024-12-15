@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/',LogoutView.as_view(), name='logout-view'),
     path('apply_leave/', views.apply_leave, name='apply_leave'),
     path('dash/', DashView.as_view(), name='dash'),
+
     path('leaveHistory', views.leavehistory, name='leaveHistory')
 ]
 if settings.DEBUG:

@@ -96,7 +96,7 @@ def apply_leave(request):
             return redirect('apply_leave')
 
         current_date = datetime.now().date()
-        max_date = current_date + timedelta(days=30)
+        max_date = current_date + timedelta(days=15)
 
         if not leave_type or not description:
             messages.error(request, "All fields are required. Please try again.")

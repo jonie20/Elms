@@ -114,7 +114,7 @@
     {% for message in messages %}
       {% if "success" in message.tags %}
         setTimeout(function() {
-          window.location.href = "{% url 'home' %}";
+          window.location.href = "{% url 'dash' %}";
         }, 3000); // Delay for 5000 ms (5 seconds)
       {% endif %}
     {% endfor %}
