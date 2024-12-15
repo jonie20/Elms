@@ -43,7 +43,7 @@
 	  <circle cx="8" cy="4.5" r="1"/>
 	</svg></span></label>
                                             <input type="date" class="form-control" name="from_date"
-                                                   id="setting-input-1" value="Lorem Ipsum Ltd." required>
+											id="myDate" onfocus="disablePastDates()" value="Lorem Ipsum Ltd." required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -118,6 +118,23 @@
         }, 3000); // Delay for 5000 ms (5 seconds)
       {% endif %}
     {% endfor %}
-  {% endif %}</script>
+  {% endif %}
+
+  
+        function disablePastDates(){
+
+            var today = new Date();
+            today.setDate(today.getDate() + 7);
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm +'-'+ dd;
+            document.getElementById("myDate").setAttribute("min", today);
+        }  
+  
+ 
+ 
+  </script>
 {% endblock %}
 {% block title %} home {% endblock %}
