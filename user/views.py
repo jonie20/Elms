@@ -41,7 +41,7 @@ class LoginView(View):
 
             # Redirect based on user's role or permissions
             if user.is_superuser or user.is_admin:  # For admin users
-                return redirect('board')
+                return redirect('/account/board')
             else:  # For regular users
                 return redirect('dash')  # Ensure 'dash' is defined in urls.py
 
@@ -123,9 +123,9 @@ def apply_leave(request):
             messages.error(request, "End date cannot be earlier than the start date.")
             return redirect('apply_leave')
 
-        total_leave_days = (to_date_obj - from_date_obj).days + 1
+        total_days = (to_date_obj - from_date_obj).days + 1
 
-        if total_leave_days > request.user.total_leave_days:
+        if total_days > request.user.total_leave_days:
             messages.error(request, "You do not have enough leave days available.")
             return redirect('apply_leave')
 
@@ -135,7 +135,7 @@ def apply_leave(request):
             to_date=to_date_obj,
             description=description,
             employee=request.user,
-            no_of_days=total_leave_days
+
         )
         leave_application.save()
         messages.success(request, "Leave application submitted successfully.")
@@ -166,19 +166,19 @@ def board(request):
 
 def add_employee(request):
     if request.method == 'POST':
-        # EmpId = request.POST.get('EmplId')
+        personal_number= request.POST.get('EmplId')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        # phone_number = request.POST.get('phone_number')
+        phone_number = request.POST.get('phone_number')
         # date_of_birth = request.POST.get('date_of_birth')
-        # gender = request.POST.get('from_date')
-        # department = request.POST.get('from_date')
+        gender = request.POST.get('from_date')
+        department = request.POST.get('from_date')
 
-        query = Account(first_name=first_name, last_name=last_name, email=email)
+        query = Account(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number,personal_number=personal_number,gender=gender, department=department)
         query.save()
 
-    return render(request, 'aaa/employee.html')
+    return render(request, 'board/employee.html')
 
 
 def manage_employee(request):
@@ -187,7 +187,7 @@ def manage_employee(request):
     #     'Employees' : Employees
     # }
 
-    return render(request, 'aaa/manageEmpl.html', {'Employees': Employees})
+    return render(request, 'board/manageEmpl.html', {'Employees': Employees})
 
 
 def add_notice(request):
@@ -196,4 +196,4 @@ def add_notice(request):
     #         'leave_applications': leave_applications,
     # }
 
-    return render(request, 'aaa/notice.html')
+    return render(request, 'board/notice.html')

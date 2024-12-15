@@ -138,7 +138,7 @@
                                                             </span>
                                                         </td>
                                                         <td class="cell">
-                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -179,8 +179,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="setting-input-2" class="form-label">Phone Number</label>
-                                            <input type="number" class="form-control" id="setting-input-2" placeholder="0712345678" required>
-                                        </div>
+                                            <p><strong>Admin Remarks:</strong> <span id="modalAdminRemarks"></span></p>
                                         <button type="submit" class="btn app-btn-primary" >Pay Now</button>
                                     </form>
                                 </div><!--//app-card-body-->
@@ -204,5 +203,23 @@
         </div>
     </div>
 </header>
+
+<script>
+    // JavaScript to handle modal data population
+    const staticBackdropModal = document.getElementById('staticBackdrop');
+
+    staticBackdropModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        const button = event.relatedTarget;
+
+        // Extract data from attributes
+        const adminRemarks = button.getAttribute('data-admin-remarks');
+
+        // Update modal content
+        document.getElementById('modalAdminRemarks').textContent = adminRemarks;
+    });
+</script>    
+</script>
+
 {% endblock %}
 {% block title %}Home{% endblock %}
