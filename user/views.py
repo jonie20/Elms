@@ -35,9 +35,17 @@ class LoginView(View):
         email = request.POST['email']
         password = request.POST['password1']
         user = AccountAuthentication.authenticate(request, email=email, password=password)
+
         if user is not None:
             login(request, user)
-            return redirect('dash')
+
+            # Redirect based on user's role or permissions
+            if user.is_superuser or user.is_uperuser:  # For admin/supervisors
+                return redirect(
+                    'board')  # Replace 'admin_dashboard' with the actual URL name for the admin site
+            else:  # For regular users
+                return redirect('dash')  # Replace 'dash' with the actual URL name for the user dashboard
+
         else:
             messages.error(request, "Invalid email or password. Please try again.")
             return redirect('login-view')
@@ -96,7 +104,7 @@ def apply_leave(request):
             return redirect('apply_leave')
 
         current_date = datetime.now().date()
-        max_date = current_date + timedelta(days=30)
+        max_date = current_date + timedelta(days=15)
 
         if not leave_type or not description:
             messages.error(request, "All fields are required. Please try again.")
@@ -144,11 +152,14 @@ def leavehistory(request):
 
     return render(request, 'leaveHistory.html',
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
+
+
 def board(request):
     applications = LeaveApplication.objects.filter(employee=request.user).order_by('-id')
-    
 
-    return render(request, 'aaa/index.html', {'applications': applications})
+    return render(request, 'board/index.html', {'applications': applications})
+
+
 def add_employee(request):
     if request.method == 'POST':
         # EmpId = request.POST.get('EmplId')
@@ -160,11 +171,11 @@ def add_employee(request):
         # gender = request.POST.get('from_date')
         # department = request.POST.get('from_date')
 
-        
-        query = Account( first_name = first_name, last_name = last_name, email = email )
+        query = Account(first_name=first_name, last_name=last_name, email=email)
         query.save()
 
     return render(request, 'aaa/employee.html')
+
 
 def manage_employee(request):
     Employees = Account.objects.all().order_by('-id')
@@ -172,9 +183,9 @@ def manage_employee(request):
     #     'Employees' : Employees
     # }
 
-
-
     return render(request, 'aaa/manageEmpl.html', {'Employees': Employees})
+
+
 def add_notice(request):
     # leave_applications = LeaveApplication.objects.all()
     # context = {
