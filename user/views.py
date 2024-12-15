@@ -32,23 +32,22 @@ class LoginView(View):
         return render(request, 'login.html')
 
     def post(self, request):
-        email = request.POST['email']
-        password = request.POST['password1']
+        email = request.POST.get('email')
+        password = request.POST.get('password1')
         user = AccountAuthentication.authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
 
             # Redirect based on user's role or permissions
-            if user.is_superuser or user.is_uperuser:  # For admin/supervisors
-                return redirect(
-                    'board')  # Replace 'admin_dashboard' with the actual URL name for the admin site
+            if user.is_superuser or user.is_admin:  # For admin users
+                return redirect('board')
             else:  # For regular users
-                return redirect('dash')  # Replace 'dash' with the actual URL name for the user dashboard
+                return redirect('dash')  # Ensure 'dash' is defined in urls.py
 
         else:
             messages.error(request, "Invalid email or password. Please try again.")
-            return redirect('login-view')
+            return redirect('login-view')  # Ensure 'login-view' is defined in urls.py
 
 
 class LogoutView(View):
