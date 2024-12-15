@@ -35,11 +35,18 @@ class AccountManager(BaseUserManager):
 
 # Custom User Model
 class Account(AbstractBaseUser):
+    DESIGNATION_CHOICES = [
+        ('iCT', 'ICT'),
+        ('TEA GIRL', 'TEA GIRL'),
+        ('CUSTOMER CARE', 'CUSTOMER CARE'),
+        ('GENERAL DUTIES', 'GENERAL DUTIES'),
+        ('SUPPORT STAFF', 'SUPPORT STAFF'),
+    ]
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=80)
     id_number = models.CharField(max_length=20, unique=True, null=True)
     personal_number = models.CharField(max_length=20, unique=True, null=True)
-    designation = models.CharField(max_length=50,null=True,blank=True)
+    designation = models.CharField(max_length=50,choices=DESIGNATION_CHOICES,null=True,blank=True)
     gender = models.CharField(
         max_length=10,
         choices=[('Male', 'Male'), ('Female', 'Female')],null=True,
@@ -52,7 +59,8 @@ class Account(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    total_leave_days = models.PositiveIntegerField(default=15)
+    total_leave_days = models.IntegerField(default=0)
+
     huduma_centre = models.CharField(max_length=100, verbose_name="Huduma Centre", blank=True)
     supervisor = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
                                    related_name='supervised_employees')
