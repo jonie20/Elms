@@ -83,6 +83,9 @@
                                     </div>
                                     <button type="submit" class="btn app-btn-primary">APPLY</button>
                                 </form>
+								{% if remaining_days is not None %}
+        <h2>Remaining Days: {{ remaining_days }}</h2>
+    {% endif %}
                             </div><!--//app-card-body-->
 
                         </div><!--//app-card-->

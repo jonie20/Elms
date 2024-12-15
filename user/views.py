@@ -92,6 +92,11 @@ def apply_leave(request):
         to_date = request.POST.get('to_date')
         description = request.POST.get('description')
 
+
+
+
+
+
         if LeaveApplication.objects.filter(employee=request.user, status='Pending').exists():
             messages.error(request, "You cannot apply for leave while a previous application is pending.")
             return redirect('apply_leave')
