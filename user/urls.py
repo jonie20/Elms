@@ -15,6 +15,6 @@ urlpatterns = [
     path('add-employee', views.add_employee, name="add-employee"),
     path('manage-employee', views.manage_employee, name="manage-employee"),
     path('add-notice', views.add_notice, name="add-notice")
-]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

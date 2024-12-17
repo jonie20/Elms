@@ -169,14 +169,21 @@ def add_employee(request):
         personal_number= request.POST.get('EmplId')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
+        username = request.POST.get('first_name')
         email = request.POST.get('email')
         phone_number = request.POST.get('phone_number')
         # date_of_birth = request.POST.get('date_of_birth')
         gender = request.POST.get('from_date')
-        department = request.POST.get('from_date')
+        designation = request.POST.get('designation')
+        profile_picture= request.POST.get('profile_picture')
 
-        query = Account(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number,personal_number=personal_number,gender=gender, department=department)
+        query = Account(first_name=first_name, last_name=last_name, email=email,
+                        phone_number=phone_number,personal_number=personal_number,gender=gender,
+                        designation=designation,profile_picture=profile_picture)
         query.save()
+        user = AccountAuthentication.authenticate(request, email=request.POST['email'],
+                                                  password=request.POST['password1'])
+        login(request, user)
 
     return render(request, 'board/employee.html')
 

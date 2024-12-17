@@ -1,5 +1,5 @@
 from django.contrib import admin
-from user.models import Account, LeaveApplication
+from user.models import Account, LeaveApplication,HudumaCentre
 
 
 
@@ -35,3 +35,6 @@ class AccountAdmin(admin.ModelAdmin):
 
     ordering = ('first_name', 'last_name')
 admin.site.register(Account,AccountAdmin)
+class HudumaCentreAdmin(admin.ModelAdmin):
+    list_display = ('location','name')
+admin.site.register(HudumaCentre,HudumaCentreAdmin)
