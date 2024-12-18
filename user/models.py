@@ -1,10 +1,18 @@
 from datetime import datetime
-
+import os
+import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 # Custom User Manager
+#  Function to generate a unique name for profile picture uploads
+def generate_unique_name(instance, filename):
+    name = uuid.uuid4()
+    full_file_name = f'{name}-{filename}'
+    return os.path.join('profile_pictures', full_file_name)
+
+
 class AccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
         if not email:
@@ -20,17 +28,27 @@ class AccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
-        user = self.create_user(
-            email=self.normalize_email(email),
-            username=username,
-            password=password,
-        )
-        user.is_admin = True
-        user.is_superuser = True
-        user.is_staff = True
-        user.save(using=self._db)
-        return user
+
+class HudumaCentre(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
+def create_superuser(self, email, username, password):
+    user = self.create_user(
+        email=self.normalize_email(email),
+        username=username,
+        password=password,
+    )
+    user.is_admin = True
+    user.is_superuser = True
+    user.is_staff = True
+    user.save(using=self._db)
+    return user
 
 
 # Custom User Model
@@ -42,14 +60,22 @@ class Account(AbstractBaseUser):
         ('GENERAL DUTIES', 'GENERAL DUTIES'),
         ('SUPPORT STAFF', 'SUPPORT STAFF'),
     ]
+    huduma_centre = models.ForeignKey(
+        HudumaCentre,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="employees",
+        verbose_name="Huduma Centre")
+
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=80)
     id_number = models.CharField(max_length=20, unique=True, null=True)
     personal_number = models.CharField(max_length=20, unique=True, null=True)
-    designation = models.CharField(max_length=50,choices=DESIGNATION_CHOICES,null=True,blank=True)
+    designation = models.CharField(max_length=50, choices=DESIGNATION_CHOICES, null=True, blank=True)
     gender = models.CharField(
         max_length=10,
-        choices=[('Male', 'Male'), ('Female', 'Female')],null=True,
+        choices=[('Male', 'Male'), ('Female', 'Female')], null=True,
     )
     profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
     email = models.EmailField(max_length=110, unique=True)
@@ -61,11 +87,9 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     total_leave_days = models.IntegerField(default=0)
 
-    huduma_centre = models.CharField(max_length=100, verbose_name="Huduma Centre", blank=True)
+    # huduma_centre = models.CharField(max_length=100, verbose_name="Huduma Centre", blank=True)
     supervisor = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
                                    related_name='supervised_employees')
-
-
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
@@ -109,8 +133,6 @@ class LeaveApplication(models.Model):
     no_of_days = models.IntegerField(verbose_name="Number of Days", default=15)
     carry_forward_days = models.IntegerField(verbose_name="Carry Forward Days", default=0)
     total_leave_days = models.IntegerField(verbose_name="Total Leave Days", default=0)
-
-
 
     def clean(self):
         super().clean()
