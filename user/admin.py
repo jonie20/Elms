@@ -22,7 +22,7 @@ admin.site.register(LeaveApplication, LeaveApplicationAdmin)
 
 class AccountAdmin(admin.ModelAdmin):
     # Fields to display in the list view
-    list_display = ('first_name', 'last_name', 'id_number', 'personal_number', 'designation', 'gender','total_leave_days')
+    list_display = ('first_name', 'last_name', 'id_number', 'personal_number','huduma_centre', 'designation', 'gender','total_leave_days')
 
     # Fields that are searchable in the admin
     search_fields = ('first_name', 'last_name', 'id_number', 'personal_number', 'designation')

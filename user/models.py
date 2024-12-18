@@ -80,6 +80,7 @@ class Account(AbstractBaseUser):
     profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
     email = models.EmailField(max_length=110, unique=True)
     username = models.CharField(max_length=50, unique=True)
+    phone_number = models.CharField(max_length=20, unique=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
@@ -87,9 +88,7 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     total_leave_days = models.IntegerField(default=0)
 
-    # huduma_centre = models.CharField(max_length=100, verbose_name="Huduma Centre", blank=True)
-    supervisor = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
-                                   related_name='supervised_employees')
+
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

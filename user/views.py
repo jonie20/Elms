@@ -5,26 +5,63 @@ from django.views import View
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
-from user.models import Account, LeaveApplication
+
+from user.models import Account, LeaveApplication, HudumaCentre
+
 
 
 class RegisterView(View):
     def get(self, request):
-        return render(request, 'register.html')
+        # Render the form with all available Huduma Centres
+        return render(request, 'board/employee.html', {
+            'huduma_centre': HudumaCentre.objects.all()  # Provide all Huduma Centres to the template
+        })
 
     def post(self, request):
+        # Get the selected Huduma Centre
+        huduma_centre_id = request.POST.get('huduma_centre')
+
+        # If no Huduma Centre is selected, return with error message
+        if not huduma_centre_id:
+            messages.error(request, "Please select a Huduma Centre.")
+            return redirect('register')  # Redirect back to the registration form (ensure this matches your URL name)
+
+        try:
+            # Retrieve the selected Huduma Centre
+            huduma_centre = HudumaCentre.objects.get(id=huduma_centre_id)
+        except HudumaCentre.DoesNotExist:
+            messages.error(request, "The selected Huduma Centre does not exist.")
+            return redirect('register')  # Redirect back to the registration form
+
+        # Automatically set username to be the same as the first name
+        username = request.POST.get('first_name').lower()  # Use the lowercase of the first name as the username
+
+        # Check if the username already exists
+        if Account.objects.filter(username=username).exists():
+            messages.error(request, "This username already exists. Please choose another one.")
+            return redirect('register')  # Redirect back to the registration form
+
+        # Create Account model using the form data
         account_model = Account.objects.create(
-            first_name=request.POST['first-name'],
-            last_name=request.POST['last-name'],
-            username=request.POST['username'],
-            email=request.POST['email'],
+            first_name=request.POST.get('first_name'),
+            last_name=request.POST.get('last_name'),
+            email=request.POST.get('email'),
+            personal_number=request.POST.get('personal_number'),
+            profile_picture=request.FILES.get('profile_picture'),  # Handle file upload correctly
+            gender=request.POST.get('gender'),
+            phone_number=request.POST.get('phone_number'),
+            id_number=request.POST.get('id_number'),
+            username=username,  # Set the username to first name
+            huduma_centre=huduma_centre,
         )
-        account_model.set_password(request.POST['password1'])
+
+        # Set password and save the account model
+        account_model.set_password(request.POST.get('password1'))
         account_model.save()
-        user = AccountAuthentication.authenticate(request, email=request.POST['email'],
-                                                  password=request.POST['password1'])
-        login(request, user)
-        return redirect('dash')
+
+        # Redirect to the dashboard without logging the user in
+        messages.success(request, "Registration successful! You can now log in.")
+        return redirect('dashboard')  # Redirect to the dashboard after successful registration
 
 
 class LoginView(View):
@@ -90,11 +127,6 @@ def apply_leave(request):
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         description = request.POST.get('description')
-
-
-
-
-
 
         if LeaveApplication.objects.filter(employee=request.user, status='Pending').exists():
             messages.error(request, "You cannot apply for leave while a previous application is pending.")
@@ -164,28 +196,28 @@ def board(request):
     return render(request, 'board/index.html', {'applications': applications})
 
 
-def add_employee(request):
-    if request.method == 'POST':
-        personal_number= request.POST.get('EmplId')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        username = request.POST.get('first_name')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        # date_of_birth = request.POST.get('date_of_birth')
-        gender = request.POST.get('from_date')
-        designation = request.POST.get('designation')
-        profile_picture= request.POST.get('profile_picture')
-
-        query = Account(first_name=first_name, last_name=last_name, email=email,
-                        phone_number=phone_number,personal_number=personal_number,gender=gender,
-                        designation=designation,profile_picture=profile_picture)
-        query.save()
-        user = AccountAuthentication.authenticate(request, email=request.POST['email'],
-                                                  password=request.POST['password1'])
-        login(request, user)
-
-    return render(request, 'board/employee.html')
+# def add_employee(request):
+#     if request.method == 'POST':
+#         personal_number = request.POST.get('EmplId')
+#         first_name = request.POST.get('first_name')
+#         last_name = request.POST.get('last_name')
+#         username = request.POST.get('first_name')
+#         email = request.POST.get('email')
+#         phone_number = request.POST.get('phone_number')
+#         # date_of_birth = request.POST.get('date_of_birth')
+#         gender = request.POST.get('from_date')
+#         designation = request.POST.get('designation')
+#         profile_picture = request.POST.get('profile_picture')
+#
+#         query = Account(first_name=first_name, last_name=last_name, email=email,
+#                         phone_number=phone_number, personal_number=personal_number, gender=gender,
+#                         designation=designation, profile_picture=profile_picture)
+#         query.save()
+#         user = AccountAuthentication.authenticate(request, email=request.POST['email'],
+#                                                   password=request.POST['password1'])
+#         login(request, user)
+#
+#     return render(request, 'board/employee.html')
 
 
 def manage_employee(request):
