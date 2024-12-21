@@ -60,13 +60,13 @@ class Account(AbstractBaseUser):
         ('GENERAL DUTIES', 'GENERAL DUTIES'),
         ('SUPPORT STAFF', 'SUPPORT STAFF'),
     ]
-    # huduma_centre = models.ForeignKey(
-    #     HudumaCentre,
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL,
-    #     related_name="employees",
-    #     verbose_name="Huduma Centre"
+    huduma_centre = models.ForeignKey(
+        HudumaCentre,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="employees",
+        verbose_name="Huduma Centre")
 
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=80)
