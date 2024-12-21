@@ -197,6 +197,7 @@ def board(request):
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def add_employee(request):
     if request.method == 'POST':
         personal_number= request.POST.get('EmplId')
@@ -213,6 +214,8 @@ def add_employee(request):
 
     return render(request, 'board/employee.html')
 =======
+=======
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 # def add_employee(request):
 #     if request.method == 'POST':
 #         personal_number = request.POST.get('EmplId')
@@ -235,6 +238,9 @@ def add_employee(request):
 #         login(request, user)
 #
 #     return render(request, 'board/employee.html')
+<<<<<<< HEAD
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
+=======
 >>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 
 

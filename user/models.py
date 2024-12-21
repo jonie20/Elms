@@ -61,7 +61,10 @@ class Account(AbstractBaseUser):
         ('SUPPORT STAFF', 'SUPPORT STAFF'),
     ]
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
     huduma_centre = models.ForeignKey(
         HudumaCentre,
         null=True,
@@ -70,13 +73,20 @@ class Account(AbstractBaseUser):
         related_name="employees",
         verbose_name="Huduma Centre")
 
+<<<<<<< HEAD
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
+=======
 >>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=80)
     id_number = models.CharField(max_length=20, unique=True, null=True)
     personal_number = models.CharField(max_length=20, unique=True, null=True)
 <<<<<<< HEAD
+<<<<<<< HEAD
     designation = models.CharField(max_length=50,choices=DESIGNATION_CHOICES,null=True,blank=True)
+=======
+    designation = models.CharField(max_length=50, choices=DESIGNATION_CHOICES, null=True, blank=True)
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 =======
     designation = models.CharField(max_length=50, choices=DESIGNATION_CHOICES, null=True, blank=True)
 >>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
@@ -95,10 +105,13 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     total_leave_days = models.IntegerField(default=0)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     huduma_centre = models.CharField(max_length=100, verbose_name="Huduma Centre", blank=True)
     supervisor = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
                                    related_name='supervised_employees')
+=======
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 =======
 >>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 
