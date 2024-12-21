@@ -37,6 +37,8 @@ class AccountManager(BaseUserManager):
         user.is_admin = True
         user.is_superuser = True
         user.is_staff = True
+        user.is_CE0 = True
+        user.is_Manager = True
         user.save(using=self._db)
         return user
 
@@ -86,6 +88,8 @@ class Account(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_CEO = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=False)
     total_leave_days = models.IntegerField(default=0)
 
     supervisor = models.ForeignKey(

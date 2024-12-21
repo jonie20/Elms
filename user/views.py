@@ -189,15 +189,14 @@ def leavehistory(request):
     return render(request, 'leaveHistory.html',
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
 
-
+@login_required()
 def board(request):
     applications = LeaveApplication.objects.filter(employee=request.user).order_by('-id')
 
     return render(request, 'board/index.html', {'applications': applications})
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 def add_employee(request):
     if request.method == 'POST':
         personal_number= request.POST.get('EmplId')
@@ -213,9 +212,7 @@ def add_employee(request):
         query.save()
 
     return render(request, 'board/employee.html')
-=======
-=======
->>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
+
 # def add_employee(request):
 #     if request.method == 'POST':
 #         personal_number = request.POST.get('EmplId')
@@ -238,10 +235,6 @@ def add_employee(request):
 #         login(request, user)
 #
 #     return render(request, 'board/employee.html')
-<<<<<<< HEAD
->>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
-=======
->>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 
 
 def manage_employee(request):
