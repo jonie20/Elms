@@ -3,116 +3,160 @@
 {% block content %}
 
 
+<<<<<<< HEAD
 <body class="app">
 	<header class="app-header fixed-top">
 		{% include 'board/navbar.html' %} 
 		{% include 'board/sidebar.html' %}
 	</header>
 	<!--//app-header-->
+=======
+    <body class="app">
+    <header class="app-header fixed-top">
+        {% include 'board/navbar.html' %}
+        {% include 'board/sidebar.html' %}
+    </header>
+    <!--//app-header-->
+>>>>>>> c05aef61053e278d2032ca138d19272bd3890ba2
 
-	<div class="app-wrapper">
+    <div class="app-wrapper">
 
-		<div class="app-content pt-3 p-md-3 p-lg-4">
-			<div class="container-xl">
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+            <div class="container-xl">
 
-				<h1 class="app-page-title">New Employee</h1>
-				<div class="row g-4 mb-4">
-					<div class="app-card app-card-chart h-100 shadow-sm">
-						<div class="app-card-header p-3 border-0">
-							<h4 class="app-card-title">Personal Information</h4>
-						</div>
-						<!--//app-card-header-->
-						<div class="app-card-body p-4">
-							<form class="settings-form row g-4 mb-4" method="POST">
-								{% csrf_token %}
-								<div class="col-12 col-lg-6">
-									<div class="mb-3">
-										<label for="setting-input-1" class="form-label">Employee ID<span class="ms-2"
-												data-bs-container="body" data-bs-toggle="popover"
-												data-bs-trigger="hover focus" data-bs-placement="top"
-												data-bs-content="This is a Bootstrap popover example. You can use popover to provide extra info."><svg
-													width="1em" height="1em" viewBox="0 0 16 16"
-													class="bi bi-info-circle" fill="currentColor"
-													xmlns="http://www.w3.org/2000/svg">
-													<path fill-rule="evenodd"
-														d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-													<path
-														d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
-													<circle cx="8" cy="4.5" r="1" />
-												</svg></span></label>
-										<input type="text" class="form-control" name="EmplId" id="setting-input-1"
-											placeholder="123456." required>
-									</div>
-									<div class="mb-3">
-										<label for="setting-input-2" class="form-label">FirstName</label>
-										<input type="text" class="form-control" name="first_name" id="setting-input-2" placeholder="Steve "
-											required>
-									</div>
-									<div class="mb-3">
-										<label for="setting-input-2" class="form-label">LastName</label>
-										<input type="text" class="form-control" name="last_name" id="setting-input-2" placeholder="Doe "
-											required>
-									</div>
-									<div class="mb-3">
-										<label for="setting-input-3" class="form-label">Email Address</label>
-										<input type="email" class="form-control" name="email" id="setting-input-3"
-										placeholder="hello@companywebsite.com">
-									</div>
-								</div>
-								<div class="col-12 col-lg-6">
-									<div class="mb-3">
-										<label for="setting-input-2" class="form-label">Phone Number</label>
-										<input type="text" class="form-control" name="phone_number" id="setting-input-2" placeholder="0712345678 "
-											required>
-									</div>
-									<div class="mb-3">
-										<label for="setting-input-2" class="form-label">Date of Birth</label>
-										<input type="date" class="form-control" name="date_of_birth" id="setting-input-2"
-											required>
-									</div>
-									<div class="mb-3">
-										<input class="" type="radio" name="flexRadioDefault" name="male" id="flexRadioDefault1">
-										<label for="flexRadioDefault1">Male</label>
-										<input class="" type="radio" name="flexRadioDefault" name="female" id="flexRadioDefault2">
-										<label for="flexRadioDefault2">Female</label>
-									</div>
-									<div class="mb-3">
-										<label for="setting-input-3" class="form-label">Department </label>
-										<select class="form-select" name="" id="setting-input-2" aria-label="Default select example">
-											<option selected value=""></option>
-											<option class="form-control" value=""></option>
-											<option class="form-control" value=""></option>
-											<option class="form-control" value=""></option>
-										</select>
-									</div>
-								</div>
+                <h1 class="app-page-title">New Employee</h1>
+                <div class="row g-4 mb-4">
+                    <div class="app-card app-card-chart h-100 shadow-sm">
+                        <div class="app-card-header p-3 border-0">
+                            <h4 class="app-card-title">Personal Information</h4>
+                        </div>
+                        <!--//app-card-header-->
+                        <div class="app-card-body p-4">
+                            <form class="settings-form row g-4 mb-4" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="col-12 col-lg-6">
+                                    <!-- ID Number -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-2" class="form-label">ID Number</label>
+                                        <input type="number" class="form-control" name="id_number" id="setting-input-2"
+                                               placeholder="ID Number" required>
+                                    </div>
 
-								<button type="submit" class="btn app-btn-primary">Submit Now</button>
-							</form>
-						</div>
-						<!--//app-card-body-->
-					</div>
-					<!--//app-card-->
-				</div>
-				<!--//row-->
-			</div>
-			<!--//container-fluid-->
-		</div>
-		<!--//app-content-->
+                                    <!-- First Name -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-2" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" name="first_name" id="setting-input-2"
+                                               placeholder="First Name" required>
+                                    </div>
 
-		<footer class="app-footer">
-			<div class="container text-center py-3">
-				<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-				<small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
-						style="color: #fb866a;"></i> by <a class="app-link" href="http://themes.3rdwavemedia.com"
-						target="_blank">Xiaoying Riley</a> for developers</small>
+                                    <!-- Last Name -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-2" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" id="setting-input-2"
+                                               placeholder="Last Name" required>
+                                    </div>
 
-			</div>
-		</footer>
-		<!--//app-footer-->
+                                    <!-- Email Address -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-3" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" name="email" id="setting-input-3"
+                                               placeholder="huduma@gmail.com">
+                                    </div>
 
-	</div>
-	<!--//app-wrapper-->
+                                    <!-- Password -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-3" class="form-label">Password</label>
+                                        <input type="password" class="form-control" name="password1"
+                                               id="setting-input-3" placeholder="Password">
+                                    </div>
+                                </div>
 
-	{% endblock %}
-	{% block title %}Home{% endblock %}
+                                <div class="col-12 col-lg-6">
+                                    <!-- Phone Number -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-2" class="form-label">Phone Number</label>
+                                        <input type="number" class="form-control" name="phone_number"
+                                               id="setting-input-2" placeholder="0712345678" required>
+                                    </div>
+
+                                    <!-- Personal Number -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-2" class="form-label">Personal Number</label>
+                                        <input type="text" class="form-control" name="personal_number"
+                                               id="setting-input-2" placeholder="123" required>
+                                    </div>
+
+                                    <!-- Huduma Centre Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-3" class="form-label">Huduma Centre</label>
+                                        <select class="form-select" name="huduma_centre" id="setting-input-2"
+                                                aria-label="Huduma Centre">
+                                            <option selected value="">Select Centre</option>
+                                            {% for centre in huduma_centre %}
+                                                <option value="{{ centre.id }}">{{ centre.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <!-- Profile Picture -->
+                                    <div class="mb-3">
+                                        <label for="profile_picture">Profile Picture:</label>
+                                        <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
+                                    </div>
+
+                                    <!-- Gender Selection (Radio Buttons) -->
+                                    <div class="mb-3">
+                                        <label for="flexRadioDefault1">Gender</label><br>
+                                        <input type="radio" name="gender" value="Male" id="flexRadioDefault1">
+                                        <label for="flexRadioDefault1">Male</label>
+                                        <input type="radio" name="gender" value="Female" id="flexRadioDefault2">
+                                        <label for="flexRadioDefault2">Female</label>
+                                    </div>
+
+                                    <!-- Department Dropdown -->
+                                    <div class="mb-3">
+                                        <label for="setting-input-3" class="form-label">Department</label>
+                                        <select class="form-select" name="designation" id="setting-input-2"
+                                                aria-label="Designation">
+                                            <option selected value="">Select Designation</option>
+                                            <option value="ICT">ICT</option>
+                                            <option value="TEA GIRL">TEA GIRL</option>
+                                            <option value="GENERAL DUTIES">GENERAL DUTIES</option>
+                                            <option value="CLEANERS">CLEANER</option>
+                                            <option value="CUSTOMER SERVICE">CUSTOMER SERVICE</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn app-btn-primary">Submit</button>
+                            </form>
+                        </div>
+
+                        <!--//app-card-body-->
+                    </div>
+                    <!--//app-card-->
+                </div>
+                <!--//row-->
+            </div>
+            <!--//container-fluid-->
+        </div>
+        <!--//app-content-->
+
+        <footer class="app-footer">
+            <div class="container text-center py-3">
+                <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+                <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
+                                                                                           style="color: #fb866a;"></i>
+                    by <a class="app-link" href="http://themes.3rdwavemedia.com"
+                          target="_blank">Nandi Dev</a> for developers</small>
+
+            </div>
+        </footer>
+        <!--//app-footer-->
+
+    </div>
+    <!--//app-wrapper-->
+
+{% endblock %}
+{% block title %}Home{% endblock %}
