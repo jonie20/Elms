@@ -80,6 +80,7 @@
                                                 <th class="cell">Total Leaves</th>
                                                 <th class="cell">Status</th>
                                                 <th class="cell">PhoneNumber</th>
+                                                <th class="cell">Centre</th>
                                                 <th class="cell"></th>
                                             </tr>
                                         </thead>
@@ -93,7 +94,10 @@
                                                 <td class="cell">{{e.email}}</td>
                                                 <td class="cell"><span>{{e.total_leave_days}}</span></td>
                                                 <td class="cell"><span class="badge bg-success">Active</span></td>
-                                                <td class="cell">34567890987654</td>
+                                                <td class="cell">{{ e.phone_number }}</td>
+                                                <td class="cell">{{ e.huduma_centre }}</td>
+                                                
+                                                
                                                 <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a>
                                                 </td>
                                             </tr>
@@ -144,7 +148,7 @@
                 <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
                 <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
                         style="color: #fb866a;"></i> by <a class="app-link" href="http://themes.3rdwavemedia.com"
-                        target="_blank">Xiaoying Riley</a> for developers</small>
+                        target="_blank">Nandi Dev</a> for Huduma</small>
 
             </div>
         </footer>
