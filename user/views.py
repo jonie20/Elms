@@ -191,7 +191,7 @@ def leavehistory(request):
 
 @login_required()
 def board(request):
-    applications = LeaveApplication.objects.filter(employee=request.user).order_by('-id')
+    applications = LeaveApplication.objects.all().order_by('-id')
 
     return render(request, 'board/index.html', {'applications': applications})
 

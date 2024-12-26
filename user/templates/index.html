@@ -138,7 +138,10 @@
                                                             </span>
                                                         </td>
                                                         <td class="cell">
-                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" 
+                                                            data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}"
+                                                            data-employee-name="{{ }}" 
+                                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -178,7 +181,7 @@
                                             <input type="text" class="form-control" id="setting-input-1" placeholder="John Doe" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="setting-input-2" class="form-label">Phone Number</label>
+                                            <label for="setting-input-2" class="form-label">Employee Name</label>
                                             <p><strong>Admin Remarks:</strong> <span id="modalAdminRemarks"></span></p>
                                         <button type="submit" class="btn app-btn-primary" >Pay Now</button>
                                     </form>
@@ -214,6 +217,7 @@
 
         // Extract data from attributes
         const adminRemarks = button.getAttribute('data-admin-remarks');
+        
 
         // Update modal content
         document.getElementById('modalAdminRemarks').textContent = adminRemarks;
