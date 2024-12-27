@@ -12,7 +12,8 @@ urlpatterns = [
     path('dash/', DashView.as_view(), name='dash'),
     path('leaveHistory', views.leavehistory, name='leaveHistory'),
     path('board/', views.board, name="dashboard"),
-    # path('add-employee', views.add_employee, name="add-employee"),
+    path('huduma-centres', views.manage_centres, name="manage-centres"),
+    path('manage-leaves', views.manage_leaves, name="manage-leaves"),
     path('manage-employee', views.manage_employee, name="manage-employee"),
     path('add-notice', views.add_notice, name="add-notice")
 ]

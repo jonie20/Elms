@@ -192,8 +192,23 @@ def leavehistory(request):
 @login_required()
 def board(request):
     applications = LeaveApplication.objects.all().order_by('-id')
+    pending = LeaveApplication.objects.filter(status="Pending").order_by('-posting_date')
+    approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
+    rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
+    cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
 
-    return render(request, 'board/index.html', {'applications': applications})
+    context = {
+        "applications": applications,
+        "pending": pending,
+        "approved": approved,
+        "rejected": rejected,
+        "cancelled": cancelled,
+    }
+
+
+
+
+    return render(request, 'board/index.html', context)
 
 
 
@@ -247,9 +262,24 @@ def manage_employee(request):
 
 
 def add_notice(request):
-    # leave_applications = LeaveApplication.objects.all()
-    # context = {
-    #         'leave_applications': leave_applications,
-    # }
+    
 
     return render(request, 'board/notice.html')
+
+def manage_centres(request):
+
+    if request.method == 'POST':
+        huduma_name= request.POST.get('huduma-name')
+        location = request.POST.get('location')
+
+        query = HudumaCentre(name=huduma_name, location=location)
+        query.save()
+
+    centres = HudumaCentre.objects.all().order_by('created_at')
+
+    return render(request, 'board/centres.html', {'centres' : centres})
+
+def manage_leaves(request):
+    
+
+    return render(request, 'board/leaves.html')

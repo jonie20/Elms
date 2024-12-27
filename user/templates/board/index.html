@@ -6,7 +6,8 @@
 	<header class="app-header fixed-top">
 		{% include 'board/navbar.html' %}
 		{% include 'board/sidebar.html' %}
-	</header><!--//app-header-->
+	</header>
+	<!--//app-header-->
 
 	<div class="app-wrapper">
 
@@ -22,10 +23,13 @@
 						<div class="app-card-body p-3 p-lg-4">
 							<h3 class="mb-3">Welcome, Admin!</h3>
 							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						</div><!--//app-card-body-->
+						</div>
+						<!--//app-card-body-->
 
-					</div><!--//inner-->
-				</div><!--//app-card-->
+					</div>
+					<!--//inner-->
+				</div>
+				<!--//app-card-->
 
 				<div class="row g-4 mb-4">
 					<div class="col-6 col-lg-3">
@@ -33,41 +37,54 @@
 							<div class="app-card-body p-3 p-lg-4">
 								<h4 class="stats-type mb-1">Total Employees</h4>
 								<div class="stats-figure">628</div>
-							</div><!--//app-card-body-->
+							</div>
+							<!--//app-card-body-->
 							<a class="app-card-link-mask" href="#"></a>
-						</div><!--//app-card-->
-					</div><!--//col-->
+						</div>
+						<!--//app-card-->
+					</div>
+					<!--//col-->
 
 					<div class="col-6 col-lg-3">
 						<div class="app-card app-card-stat shadow-sm h-100">
 							<div class="app-card-body p-3 p-lg-4">
 								<h4 class="stats-type mb-1">Huduma centres</h4>
 								<div class="stats-figure">52</div>
-							</div><!--//app-card-body-->
+							</div>
+							<!--//app-card-body-->
 							<a class="app-card-link-mask" href="#"></a>
-						</div><!--//app-card-->
-					</div><!--//col-->
+						</div>
+						<!--//app-card-->
+					</div>
+					<!--//col-->
 					<div class="col-6 col-lg-3">
 						<div class="app-card app-card-stat shadow-sm h-100">
 							<div class="app-card-body p-3 p-lg-4">
 								<h4 class="stats-type mb-1">Employees on Leave</h4>
 								<div class="stats-figure">23</div>
 
-							</div><!--//app-card-body-->
+							</div>
+							<!--//app-card-body-->
 							<a class="app-card-link-mask" href="#"></a>
-						</div><!--//app-card-->
-					</div><!--//col-->
+						</div>
+						<!--//app-card-->
+					</div>
+					<!--//col-->
 					<div class="col-6 col-lg-3">
 						<div class="app-card app-card-stat shadow-sm h-100">
 							<div class="app-card-body p-3 p-lg-4">
 								<h4 class="stats-type mb-1">Leaves</h4>
 								<div class="stats-figure">6</div>
 
-							</div><!--//app-card-body-->
+							</div>
+							<!--//app-card-body-->
 							<a class="app-card-link-mask" href="#"></a>
-						</div><!--//app-card-->
-					</div><!--//col-->
-				</div><!--//row-->
+						</div>
+						<!--//app-card-->
+					</div>
+					<!--//col-->
+				</div>
+				<!--//row-->
 
 				<div class="container-xl">
 
@@ -89,7 +106,8 @@
 											</div>
 										</form>
 
-									</div><!--//col-->
+									</div>
+									<!--//col-->
 									<div class="col-auto">
 
 										<select class="form-select w-auto">
@@ -113,10 +131,14 @@
 											Download CSV
 										</a>
 									</div>
-								</div><!--//row-->
-							</div><!--//table-utilities-->
-						</div><!--//col-auto-->
-					</div><!--//row-->
+								</div>
+								<!--//row-->
+							</div>
+							<!--//table-utilities-->
+						</div>
+						<!--//col-auto-->
+					</div>
+					<!--//row-->
 
 
 					<nav id="orders-table-tab"
@@ -155,21 +177,23 @@
 												</tr>
 											</thead>
 											<tbody>
-												{% if applications %}
-												{% for a in applications %}
+												{% if pending %}
+												{% for p in pending %}
 												<tr>
 													<td class="cell">{{ forloop.counter }}</td>
-													<td class="cell"><span class="truncate">{{ a.employee}}</span></td>
-													<td class="cell">{{ a.description }}</td>
-													<td class="cell"><span class="cell-data">{{ a.posting_date }}</span></td>
-													<td class="cell"><span class="badge bg-warning">{{ a.status }}</span></td>
+													<td class="cell"><span class="truncate">{{ p.employee}}</span></td>
+													<td class="cell">{{ p.description }}</td>
+													<td class="cell"><span class="cell-data">{{ p.posting_date }}</span>
+													</td>
+													<td class="cell"><span class="badge bg-warning">{{ p.status
+															}}</span></td>
 													<td class="cell">{{a.no_of_days}}</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary" 
-														data-id="{{a.id}}" 
-														data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}" 
-														data-employee-name="{{ a.employee}}"
-														data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a></td>
-															
+													<td class="cell"><a class="btn-sm app-btn-secondary"
+															data-id="{{p.id}}"
+															data-admin-remarks="{{ p.admin_remarks|default:'N/A' }}"
+															data-employee-name="{{ p.employee}}" data-bs-toggle="modal"
+															data-bs-target="#staticBackdrop" href="#">View</a></td>
+
 
 												</tr>
 												{% endfor %}
@@ -180,10 +204,14 @@
 												{% endif %}
 											</tbody>
 										</table>
-									</div><!--//table-responsive-->
-								</div><!--//app-card-body-->
-							</div><!--//app-card-->
-						</div><!--//tab-pane-->
+									</div>
+									<!--//table-responsive-->
+								</div>
+								<!--//app-card-body-->
+							</div>
+							<!--//app-card-->
+						</div>
+						<!--//tab-pane-->
 
 
 						<div class="tab-pane fade" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
@@ -203,8 +231,10 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% if applications %}
+												{% for a in applications %}
 												<tr>
-													<td class="cell">#15346</td>
+													<td class="cell">{{ forloop.counter }}</td>
 													<td class="cell"><span class="truncate">Lorem ipsum dolor sit amet
 															eget volutpat erat</span></td>
 													<td class="cell">John Sanders</td>
@@ -215,76 +245,22 @@
 													<td class="cell"><a class="btn-sm app-btn-secondary"
 															href="#">View</a></td>
 												</tr>
+												{% endfor %}
+												{% else %}
 												<tr>
-													<td class="cell">#15345</td>
-													<td class="cell"><span class="truncate">Consectetur adipiscing
-															elit</span></td>
-													<td class="cell">Dylan Ambrose</td>
-													<td class="cell"><span class="cell-data">16 Oct</span><span
-															class="note">03:16 AM</span></td>
-													<td class="cell"><span class="badge bg-warning">Pending</span></td>
-													<td class="cell">$96.20</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
+													<td colspan="8">No leave applications found.</td>
 												</tr>
-												<tr>
-													<td class="cell">#15344</td>
-													<td class="cell"><span class="truncate">Pellentesque diam
-															imperdiet</span></td>
-													<td class="cell">Teresa Holland</td>
-													<td class="cell"><span class="cell-data">16 Oct</span><span
-															class="note">01:16 AM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$123.00</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
-												</tr>
-
-												<tr>
-													<td class="cell">#15343</td>
-													<td class="cell"><span class="truncate">Vestibulum a accumsan lectus
-															sed mollis ipsum</span></td>
-													<td class="cell">Jayden Massey</td>
-													<td class="cell"><span class="cell-data">15 Oct</span><span
-															class="note">8:07 PM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$199.00</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
-												</tr>
-
-												<tr>
-													<td class="cell">#15342</td>
-													<td class="cell"><span class="truncate">Justo feugiat neque</span>
-													</td>
-													<td class="cell">Reina Brooks</td>
-													<td class="cell"><span class="cell-data">12 Oct</span><span
-															class="note">04:23 PM</span></td>
-													<td class="cell"><span class="badge bg-danger">Cancelled</span></td>
-													<td class="cell">$59.00</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
-												</tr>
-
-												<tr>
-													<td class="cell">#15341</td>
-													<td class="cell"><span class="truncate">Morbi vulputate lacinia
-															neque et sollicitudin</span></td>
-													<td class="cell">Raymond Atkins</td>
-													<td class="cell"><span class="cell-data">11 Oct</span><span
-															class="note">11:18 AM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$678.26</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
-												</tr>
+												{% endif %}
 
 											</tbody>
 										</table>
-									</div><!--//table-responsive-->
+									</div>
+									<!--//table-responsive-->
 
-								</div><!--//app-card-body-->
-							</div><!--//app-card-->
+								</div>
+								<!--//app-card-body-->
+							</div>
+							<!--//app-card-->
 							<nav class="app-pagination">
 								<ul class="pagination justify-content-center">
 									<li class="page-item disabled">
@@ -297,9 +273,11 @@
 										<a class="page-link" href="#">Next</a>
 									</li>
 								</ul>
-							</nav><!--//app-pagination-->
+							</nav>
+							<!--//app-pagination-->
 
-						</div><!--//tab-pane-->
+						</div>
+						<!--//tab-pane-->
 
 						<div class="tab-pane fade" id="orders-paid" role="tabpanel" aria-labelledby="orders-paid-tab">
 							<div class="app-card app-card-orders-table mb-5">
@@ -319,65 +297,40 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% if approved %}
+												{% for a in approved %}
 												<tr>
-													<td class="cell">#15346</td>
-													<td class="cell"><span class="truncate">Lorem ipsum dolor sit amet
-															eget volutpat erat</span></td>
-													<td class="cell">John Sanders</td>
-													<td class="cell"><span>17 Oct</span><span class="note">2:16
-															PM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$259.35</td>
+													<td class="cell">{{ forloop.counter }}</td>
+													<td class="cell"><span class="truncate">{{ a.employee}}</span></td>
+													<td class="cell">{{ a.description }}</td>
+													<td class="cell"><span>{{ a.posting_date }}</span></td>
+													<td class="cell"><span class="badge bg-success">{{ a.status
+															}}</span></td>
+													<td class="cell">{{ a.no_of_days }}</td>
 													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
+															data-id="{{a.id}}"
+															data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}"
+															data-employee-name="{{ a.employee}}" data-bs-toggle="modal"
+															data-bs-target="#staticBackdrop" href="#">View</a></td>
 												</tr>
-
+												{% endfor %}
+												{% else %}
 												<tr>
-													<td class="cell">#15344</td>
-													<td class="cell"><span class="truncate">Pellentesque diam
-															imperdiet</span></td>
-													<td class="cell">Teresa Holland</td>
-													<td class="cell"><span class="cell-data">16 Oct</span><span
-															class="note">01:16 AM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$123.00</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
+													<td colspan="8">No leave applications found.</td>
 												</tr>
+												{% endif %}
 
-												<tr>
-													<td class="cell">#15343</td>
-													<td class="cell"><span class="truncate">Vestibulum a accumsan lectus
-															sed mollis ipsum</span></td>
-													<td class="cell">Jayden Massey</td>
-													<td class="cell"><span class="cell-data">15 Oct</span><span
-															class="note">8:07 PM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$199.00</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
-												</tr>
-
-
-												<tr>
-													<td class="cell">#15341</td>
-													<td class="cell"><span class="truncate">Morbi vulputate lacinia
-															neque et sollicitudin</span></td>
-													<td class="cell">Raymond Atkins</td>
-													<td class="cell"><span class="cell-data">11 Oct</span><span
-															class="note">11:18 AM</span></td>
-													<td class="cell"><span class="badge bg-success">Paid</span></td>
-													<td class="cell">$678.26</td>
-													<td class="cell"><a class="btn-sm app-btn-secondary"
-															href="#">View</a></td>
-												</tr>
 
 											</tbody>
 										</table>
-									</div><!--//table-responsive-->
-								</div><!--//app-card-body-->
-							</div><!--//app-card-->
-						</div><!--//tab-pane-->
+									</div>
+									<!--//table-responsive-->
+								</div>
+								<!--//app-card-body-->
+							</div>
+							<!--//app-card-->
+						</div>
+						<!--//tab-pane-->
 
 
 						<div class="tab-pane fade" id="orders-cancelled" role="tabpanel"
@@ -398,34 +351,51 @@
 												</tr>
 											</thead>
 											<tbody>
+												{% if rejected %}
+												{% for r in rejected %}
 
 												<tr>
-													<td class="cell">#15342</td>
-													<td class="cell"><span class="truncate">Justo feugiat neque</span>
+													<td class="cell">{{ forloop.counter }}</td>
+													<td class="cell"><span class="truncate">{{ r.employee}}</span>
 													</td>
 													<td class="cell">Reina Brooks</td>
 													<td class="cell"><span class="cell-data">12 Oct</span><span
 															class="note">04:23 PM</span></td>
-													<td class="cell"><span class="badge bg-danger">Cancelled</span></td>
+													<td class="cell"><span class="badge bg-danger">{{ r.status }}</span>
+													</td>
 													<td class="cell">$59.00</td>
 													<td class="cell"><a class="btn-sm app-btn-secondary"
 															href="#">View</a></td>
 												</tr>
+												{% endfor %}
+												{% else %}
+												<tr>
+													<td colspan="8">No leave applications found.</td>
+												</tr>
+												{% endif %}
 
 											</tbody>
 										</table>
-									</div><!--//table-responsive-->
-								</div><!--//app-card-body-->
-							</div><!--//app-card-->
-						</div><!--//tab-pane-->
-					</div><!--//tab-content-->
+									</div>
+									<!--//table-responsive-->
+								</div>
+								<!--//app-card-body-->
+							</div>
+							<!--//app-card-->
+						</div>
+						<!--//tab-pane-->
+					</div>
+					<!--//tab-content-->
 
 
 
-				</div><!--//container-fluid-->
+				</div>
+				<!--//container-fluid-->
 
-			</div><!--//container-fluid-->
-		</div><!--//app-content-->
+			</div>
+			<!--//container-fluid-->
+		</div>
+		<!--//app-content-->
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 			aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -455,14 +425,43 @@
 												</svg></span></label>
 										<!-- <input type="text" class="form-control" id="setting-input-1"
 											placeholder="John Doe" required> -->
-											<span id="modalEmployeeName"></span>
+										<span id="modalEmployeeName"></span>
+									</div>
+									<div class="app-card app-card-settings shadow-sm p-4">
+
+										<div class="app-card-body">
+											<div class="mb-2"><strong>Employee Name:</strong> <span
+													id="modalEmployeeName"></span></div>
+											<div class="mb-2"><strong>Date Applied:</strong> </div>
+											<div class="mb-2"><strong>From date:</strong> 2030-09-24</div>
+											<div class="mb-2"><strong>To date:</strong> 2030-09-24</div>
+											<div class="mb-4"><strong>Status:</strong> <span
+													class="badge bg-success">Active</span></div>
+
+											
+
+
+											<div class="row justify-content-between">
+												<div class="col-auto">
+													<a class="btn app-btn-primary" href="#">Upgrade Plan</a>
+												</div>
+												<div class="col-auto">
+													<a class="btn app-btn-secondary" href="#">Cancel Plan</a>
+												</div>
+											</div>
+
+										</div>
+										<!--//app-card-body-->
+
 									</div>
 									<div class="mb-3">
-										<label for="setting-input-2" class="form-label">Employee Name</label><span id="modalEmployeeName"></span>
+										<label for="setting-input-2" class="form-label">Employee Name</label><span
+											id="modalEmployeeName"></span>
 										<p><strong>Admin Remarks:</strong> <span id="modalAdminRemarks"></span></p>
-										<button type="submit" class="btn app-btn-primary">Pay Now</button>
+										<button type="submit" class="btn app-btn-primary">Update</button>
 								</form>
-							</div><!--//app-card-body-->
+							</div>
+							<!--//app-card-body-->
 
 						</div>
 					</div>
@@ -483,22 +482,24 @@
 						target="_blank">Xiaoying Riley</a> for developers</small>
 
 			</div>
-		</footer><!--//app-footer-->
+		</footer>
+		<!--//app-footer-->
 
-	</div><!--//app-wrapper-->
+	</div>
+	<!--//app-wrapper-->
 
 	<script>
 		// JavaScript to handle modal data population
 		const staticBackdropModal = document.getElementById('staticBackdrop');
-	
+
 		staticBackdropModal.addEventListener('show.bs.modal', function (event) {
 			// Button that triggered the modal
 			const button = event.relatedTarget;
-	
+
 			// Extract data from attributes
 			const adminRemarks = button.getAttribute('data-admin-remarks');
 			const EmployeeName = button.getAttribute('data-employee-name');
-	
+
 			// Update modal content
 			document.getElementById('modalAdminRemarks').textContent = adminRemarks;
 			document.getElementById('modalEmployeeName').textContent = EmployeeName;

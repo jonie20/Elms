@@ -23,8 +23,8 @@
                                     <p>Thank you for being a dedicated member of Huduma.</p>
                                 </div>
                                 <div class="col-12 col-lg-3">
-                                    <a class="btn btn-outline-success btn-sm border-primary" href="{% url 'apply_leave' %}">Apply Leave</a>
-                                </div>
+								    <a class="btn app-btn-primary" href="{% url 'apply_leave' %}">Apply leave</a>
+							    </div><!--//col--> 
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -140,7 +140,7 @@
                                                         <td class="cell">
                                                             <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" 
                                                             data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}"
-                                                            data-employee-name="{{ }}" 
+                                                            data-employee-name="{{ application.status}}" 
                                                             data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
