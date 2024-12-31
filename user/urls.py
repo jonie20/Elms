@@ -15,7 +15,8 @@ urlpatterns = [
     path('huduma-centres', views.manage_centres, name="manage-centres"),
     path('manage-leaves', views.manage_leaves, name="manage-leaves"),
     path('manage-employee', views.manage_employee, name="manage-employee"),
-    path('add-notice', views.add_notice, name="add-notice")
+    path('add-notice', views.add_notice, name="add-notice"),
+    path('setpassword', views.set_pass, name="reset_pass")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

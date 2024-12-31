@@ -5,8 +5,8 @@
 
 <body class="app">
     <header class="app-header fixed-top">
-		{% include 'board/navbar.html' %} 
-		{% include 'board/sidebar.html' %}
+        {% include 'board/navbar.html' %}
+        {% include 'board/sidebar.html' %}
     </header>
     <!--//app-header-->
 
@@ -67,95 +67,201 @@
                 <!--//row-->
 
 
-                    <div class="tab-pane" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
-                        <div class="app-card app-card-orders-table shadow-sm mb-5">
-                            <div class="app-card-body">
-                                <div class="table-responsive">
-                                    <table class="table app-table-hover mb-0 text-left">
-                                        <thead>
-                                            <tr>
-                                                <th class="cell">s/no{{ forloop.counter }}</th>
-                                                <th class="cell">Emp/Name</th>
-                                                <th class="cell">Email</th>
-                                                <th class="cell">Total Leaves</th>
-                                                <th class="cell">Status</th>
-                                                <th class="cell">PhoneNumber</th>
-                                                <th class="cell">Centre</th>
-                                                <th class="cell">Profile</th>
-                                                <th class="cell"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% if Employees %}
+                <div class="tab-pane" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+                    <div class="app-card app-card-orders-table shadow-sm mb-5">
+                        <div class="app-card-body">
+                            <div class="table-responsive">
+                                <table class="table app-table-hover mb-0 text-left">
+                                    <thead>
+                                        <tr>
+                                            <th class="cell">s/no{{ forloop.counter }}</th>
+                                            <th class="cell">Emp/Name</th>
+                                            <th class="cell">Email</th>
+                                            <th class="cell">Total Leaves</th>
+                                            <th class="cell">Status</th>
+                                            <th class="cell">PhoneNumber</th>
+                                            <th class="cell">Centre</th>
+                                            <th class="cell">Profile</th>
+                                            <th class="cell"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if Employees %}
 
-                                            {% for e in Employees %}
-                                            <tr>
-                                                <td class="cell">{{ forloop.counter }}</td>
-                                                <td class="cell"><span class="truncate">{{e.first_name}} {{e.last_name}}</span></td>
-                                                <td class="cell">{{e.email}}</td>
-                                                <td class="cell"><span>{{e.total_leave_days}}</span></td>
-                                                <td class="cell"><span class="badge bg-success">Active</span></td>
-                                                <td class="cell">{{ e.phone_number }}</td>
-                                                <td class="cell">{{ e.huduma_centre }}</td>
-                                                <td class="cell">{{ e.profile_picture}}</td>
-                                                
-                                                <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                            {% else %}
-                                                <tr>
-                                                    <td colspan="7" class="text-center">Employees found.</td>
-                                                </tr>
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!--//table-responsive-->
+                                        {% for e in Employees %}
+                                        <tr>
+                                            <td class="cell">{{ forloop.counter }}</td>
+                                            <td class="cell"><span class="truncate">{{e.first_name}}
+                                                    {{e.last_name}}</span></td>
+                                            <td class="cell">{{e.email}}</td>
+                                            <td class="cell"><span>{{e.total_leave_days}}</span></td>
+                                            <td class="cell"><span class="badge bg-success">Active</span></td>
+                                            <td class="cell">{{ e.phone_number }}</td>
+                                            <td class="cell">{{ e.huduma_centre }}</td>
+                                            <td class="cell">{{ e.profile_picture}}</td>
 
+                                            <td class="cell">
+                                                <a class="btn-sm app-btn-secondary" data-id="{{e.id}}" 
+                                                data-first-name="{{ e.first_name }}"
+                                                data-last-name="{{ e.last_name }}" 
+                                                data-phonenumber="{{ e.phone_number }}"
+                                                data-email="{{ e.email }}"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="7" class="text-center">Employees found.</td>
+                                        </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
-                            <!--//app-card-body-->
+                            <!--//table-responsive-->
+
                         </div>
-                        <!--//app-card-->
-                        <nav class="app-pagination">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!--//app-pagination-->
+                        <!--//app-card-body-->
+                    </div>
+                    <!--//app-card-->
+                    <nav class="app-pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!--//app-pagination-->
+
+                </div>
+                <!--//tab-pane-->
+            </div>
+            <!--//tab-content-->
+
+
+
+        </div>
+        <!--//container-fluid-->
+    </div>
+    <!--//app-content-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Employee Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="app-card app-card-settings shadow-sm p-4">
+
+                        <div class="app-card-body">
+                            <form class="settings-form">
+                                <div class="mb-3">
+                                    <label for="setting-input-1" class="form-label">Customer Name<span class="ms-2"
+                                            data-bs-container="body" data-bs-toggle="popover"
+                                            data-bs-trigger="hover focus" data-bs-placement="top"
+                                            data-bs-content="This is a Bootstrap popover example. You can use popover to provide extra info."><svg
+                                                width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle"
+                                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                <path
+                                                    d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
+                                                <circle cx="8" cy="4.5" r="1" />
+                                            </svg></span></label>
+                                    <input type="text" class="form-control" id="setting-input-1" 
+                                        required><span id="modalFirstName"></span>
+                                </div>
+                                <div class="app-card-body">
+                                    <div class="mb-2"><strong>First Name: <span
+                                            id="modalFirstName"></span></strong></div>
+                                    <div class="mb-2"><strong>Last Name: <span
+                                        id="modalLastName"></span></strong></div>
+                                    <div class="mb-2"><strong>Email: <span
+                                        id="modalEmail"></span></strong></div>
+                                    <div class="mb-2"><strong>Phone Number: <span
+                                        id="modalPhonenumber"></span></strong> </div>
+                                    <div class="mb-4"><strong>Status:</strong> <span
+                                            class="badge bg-success">Active</span></div>
+
+                                            <div class="mb-3">
+                                                <label for="setting-input-3" class="form-label">Status</label>
+                                                <select class="form-select" name="status" id="setting-input-2"
+                                                        aria-label="Status">
+                                                    <option selected value="">Select Status</option>
+                                                    {% for centre in huduma_centre %}
+                                                        <option value="{{ centre.id }}">{{ centre.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <a class="btn app-btn-primary" href="#">Update Status</a>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a class="btn app-btn-secondary" href="#">Cancel Plan</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--//app-card-body-->
+                                
+                                    <button type="submit" class="btn app-btn-primary">Pay Now</button>
+                            </form>
+                        </div>
+                        <!--//app-card-body-->
 
                     </div>
-                    <!--//tab-pane-->
                 </div>
-                <!--//tab-content-->
-
-
-
+                <!-- <div class="modal-footer">
+                            <button type="button" class="btn app-btn-secondary" data-bs-dismiss="modal"> Close</button>
+                            <button type="button" class="btn app-btn-primary">Pay Now</button>
+                        </div> -->
             </div>
-            <!--//container-fluid-->
         </div>
-        <!--//app-content-->
+    </div>
 
-        <footer class="app-footer">
-            <div class="container text-center py-3">
-                <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-                <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
-                        style="color: #fb866a;"></i> by <a class="app-link" href="http://themes.3rdwavemedia.com"
-                        target="_blank">Nandi Dev</a> for Huduma</small>
+    <footer class="app-footer">
+        <div class="container text-center py-3">
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
+                    style="color: #fb866a;"></i> by <a class="app-link" href="http://themes.3rdwavemedia.com"
+                    target="_blank">Nandi Dev</a> for Huduma</small>
 
-            </div>
-        </footer>
-        <!--//app-footer-->
+        </div>
+    </footer>
+    <!--//app-footer-->
 
 </body>
-    <!--//app-wrapper-->
-	{% endblock %}
-	{% block title %}Home{% endblock %}
+<!--//app-wrapper-->
+<script>
+    // JavaScript to handle modal data population
+    const staticBackdropModal = document.getElementById('staticBackdrop');
+
+    staticBackdropModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        const button = event.relatedTarget;
+
+        // Extract data from attributes
+        const firstname = button.getAttribute('data-first-name');
+        const lastname = button.getAttribute('data-last-name');
+        const email = button.getAttribute('data-email');
+        const phonenumber = button.getAttribute('data-phonenumber');
+        
+
+        // Update modal content
+        document.getElementById('modalFirstName').textContent = firstname;
+        document.getElementById('modalLastName').textContent = lastname;
+        document.getElementById('modalPhonenumber').textContent = phonenumber;
+        document.getElementById('modalEmail').textContent = email;
+    });
+</script>
+{% endblock %}
+{% block title %}Home{% endblock %}

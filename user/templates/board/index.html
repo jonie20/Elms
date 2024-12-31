@@ -438,6 +438,17 @@
 											<div class="mb-4"><strong>Status:</strong> <span
 													class="badge bg-success">Active</span></div>
 
+													<div class="mb-3">
+														<label for="setting-input-3" class="form-label">Status</label>
+														<select class="form-select" name="status" id="setting-input-2"
+																aria-label="Status">
+															<option selected value="">Select Status</option>
+															{% for centre in huduma_centre %}
+																<option value="{{ centre.id }}">{{ centre.name }}</option>
+															{% endfor %}
+														</select>
+													</div>
+
 											
 
 
