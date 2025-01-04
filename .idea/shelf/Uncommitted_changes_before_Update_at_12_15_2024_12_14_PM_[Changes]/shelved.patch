@@ -1,0 +1,77 @@
+Index: user/urls.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from django.conf.urls.static import static\r\nfrom django.urls import path\r\nfrom user.views import RegisterView, LoginView, LogoutView, DashView\r\nfrom user import views\r\nfrom django.conf import settings\r\n\r\nurlpatterns = [\r\n    path('register/',RegisterView.as_view(), name='register-view'),\r\n    path('login/',LoginView.as_view(), name='login-view'),\r\n    path('logout/',LogoutView.as_view(), name='logout-view'),\r\n    path('apply_leave/', views.apply_leave, name='apply_leave'),\r\n    path('dash/', DashView.as_view(), name='dash'),\r\n\r\n    path('leaveHistory', views.leavehistory, name='leaveHistory')\r\n]\r\nif settings.DEBUG:\r\n    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/user/urls.py b/user/urls.py
+--- a/user/urls.py	(revision 08a5d629859140bf46d93a89a33843e6d51b56b5)
++++ b/user/urls.py	(date 1734253945603)
+@@ -10,8 +10,11 @@
+     path('logout/',LogoutView.as_view(), name='logout-view'),
+     path('apply_leave/', views.apply_leave, name='apply_leave'),
+     path('dash/', DashView.as_view(), name='dash'),
+-
+-    path('leaveHistory', views.leavehistory, name='leaveHistory')
++    path('leaveHistory', views.leavehistory, name='leaveHistory'),
++    path('board', views.board, name="dashboard"),
++    path('add-employee', views.add_employee, name="add-employee"),
++    path('manage-employee', views.manage_employee, name="manage-employee"),
++    path('add-notice', views.add_notice, name="add-notice")
+ ]
+ if settings.DEBUG:
+     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+Index: user/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from datetime import datetime, timedelta\r\nfrom django.contrib import messages\r\nfrom django.shortcuts import render, redirect\r\nfrom django.views import View\r\nfrom django.contrib.auth import login, logout\r\nfrom django.contrib.auth.decorators import login_required\r\nfrom user.authentication import AccountAuthentication\r\nfrom user.models import Account, LeaveApplication\r\n\r\n\r\nclass RegisterView(View):\r\n    def get(self, request):\r\n        return render(request, 'register.html')\r\n\r\n    def post(self, request):\r\n        account_model = Account.objects.create(\r\n            first_name=request.POST['first-name'],\r\n            last_name=request.POST['last-name'],\r\n            username=request.POST['username'],\r\n            email=request.POST['email'],\r\n        )\r\n        account_model.set_password(request.POST['password1'])\r\n        account_model.save()\r\n        user = AccountAuthentication.authenticate(request, email=request.POST['email'],\r\n                                                  password=request.POST['password1'])\r\n        login(request, user)\r\n        return redirect('dash')\r\n\r\n\r\nclass LoginView(View):\r\n    def get(self, request):\r\n        return render(request, 'login.html')\r\n\r\n    def post(self, request):\r\n        email = request.POST['email']\r\n        password = request.POST['password1']\r\n        user = AccountAuthentication.authenticate(request, email=email, password=password)\r\n        if user is not None:\r\n            login(request, user)\r\n            return redirect('dash')\r\n        else:\r\n            messages.error(request, \"Invalid email or password. Please try again.\")\r\n            return redirect('login-view')\r\n\r\n\r\nclass LogoutView(View):\r\n    def get(self, request):\r\n        logout(request)\r\n        return redirect('login-view')\r\n\r\n\r\nclass DashView(View):\r\n    def get(self, request):\r\n        # Retrieve all leave applications for the user\r\n        leave_applications = LeaveApplication.objects.filter(employee=request.user).order_by('-posting_date')\r\n\r\n        # Calculate dynamic values\r\n        carry_forward_days = leave_applications.filter(\r\n            status=\"Approved\", to_date__lt=datetime.now().date()\r\n        ).count()  # Replace with actual carry-forward logic\r\n\r\n        leave_allocated = 15  # Example value; replace with actual allocation logic\r\n        total_leave_days = carry_forward_days + leave_allocated\r\n\r\n        # Pass data to template\r\n        context = {\r\n            'leave_applications': leave_applications,\r\n            'status_filter': request.GET.get('status', 'all'),\r\n            'dashboard_data': {\r\n                'financial_year': '2024/2025',  # Hardcoded\r\n                'carry_forward': carry_forward_days,\r\n                'leave_allocated': leave_allocated,\r\n                'total_leave_days': total_leave_days,\r\n            }\r\n        }\r\n        return render(request, 'index.html', context)\r\n\r\n\r\n@login_required\r\ndef apply_leave(request):\r\n    if request.method == 'POST':\r\n        leave_type = request.POST.get('leave_type')\r\n        from_date = request.POST.get('from_date')\r\n        to_date = request.POST.get('to_date')\r\n        description = request.POST.get('description')\r\n\r\n        if LeaveApplication.objects.filter(employee=request.user, status='Pending').exists():\r\n            messages.error(request, \"You cannot apply for leave while a previous application is pending.\")\r\n            return redirect('apply_leave')\r\n\r\n        try:\r\n            from_date_obj = datetime.strptime(from_date, '%Y-%m-%d').date()\r\n            to_date_obj = datetime.strptime(to_date, '%Y-%m-%d').date()\r\n        except ValueError:\r\n            messages.error(request, \"Invalid date format. Please try again.\")\r\n            return redirect('apply_leave')\r\n\r\n        current_date = datetime.now().date()\r\n        max_date = current_date + timedelta(days=15)\r\n\r\n        if not leave_type or not description:\r\n            messages.error(request, \"All fields are required. Please try again.\")\r\n            return redirect('apply_leave')\r\n        elif from_date_obj < current_date:\r\n            messages.error(request, \"Start date cannot be in the past. Please select a valid date.\")\r\n            return redirect('apply_leave')\r\n        elif from_date_obj > max_date:\r\n            messages.error(request, \"Start date cannot be more than 1 month from today.\")\r\n            return redirect('apply_leave')\r\n        elif to_date_obj < from_date_obj:\r\n            messages.error(request, \"End date cannot be earlier than the start date.\")\r\n            return redirect('apply_leave')\r\n\r\n        total_leave_days = (to_date_obj - from_date_obj).days + 1\r\n\r\n        if total_leave_days > request.user.total_leave_days:\r\n            messages.error(request, \"You do not have enough leave days available.\")\r\n            return redirect('apply_leave')\r\n\r\n        leave_application = LeaveApplication(\r\n            leave_type=leave_type,\r\n            from_date=from_date_obj,\r\n            to_date=to_date_obj,\r\n            description=description,\r\n            employee=request.user,\r\n            no_of_days=total_leave_days\r\n        )\r\n        leave_application.save()\r\n        messages.success(request, \"Leave application submitted successfully.\")\r\n        return redirect('dash')\r\n\r\n    return render(request, 'apply_leave.html')\r\n\r\n\r\n@login_required\r\ndef leavehistory(request):\r\n    status_filter = request.GET.get('status', 'all')\r\n\r\n    if status_filter == 'all':\r\n        leave_applications = LeaveApplication.objects.filter(employee=request.user).order_by('-posting_date')\r\n    else:\r\n        leave_applications = LeaveApplication.objects.filter(employee=request.user, status=status_filter).order_by(\r\n            '-posting_date')\r\n\r\n    return render(request, 'leaveHistory.html',\r\n                  {'leave_applications': leave_applications, 'status_filter': status_filter})\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/user/views.py b/user/views.py
+--- a/user/views.py	(revision 08a5d629859140bf46d93a89a33843e6d51b56b5)
++++ b/user/views.py	(date 1734253866518)
+@@ -144,3 +144,41 @@
+ 
+     return render(request, 'leaveHistory.html',
+                   {'leave_applications': leave_applications, 'status_filter': status_filter})
++def board(request):
++    applications = LeaveApplication.objects.filter(employee=request.user).order_by('-id')
++    
++
++    return render(request, 'aaa/index.html', {'applications': applications})
++def add_employee(request):
++    if request.method == 'POST':
++        # EmpId = request.POST.get('EmplId')
++        first_name = request.POST.get('first_name')
++        last_name = request.POST.get('last_name')
++        email = request.POST.get('email')
++        # phone_number = request.POST.get('phone_number')
++        # date_of_birth = request.POST.get('date_of_birth')
++        # gender = request.POST.get('from_date')
++        # department = request.POST.get('from_date')
++
++        
++        query = Account( first_name = first_name, last_name = last_name, email = email )
++        query.save()
++
++    return render(request, 'aaa/employee.html')
++
++def manage_employee(request):
++    Employees = Account.objects.all().order_by('-id')
++    # context = {
++    #     'Employees' : Employees
++    # }
++
++
++
++    return render(request, 'aaa/manageEmpl.html', {'Employees': Employees})
++def add_notice(request):
++    # leave_applications = LeaveApplication.objects.all()
++    # context = {
++    #         'leave_applications': leave_applications,
++    # }
++
++    return render(request, 'aaa/notice.html')
+\ No newline at end of file

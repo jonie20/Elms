@@ -31,18 +31,17 @@
         <div class="app-content pt-3 p-md-3 p-lg-4">
             <div class="container-xl">
 
-                <h1 class="app-page-title">Huduma Centres in Kenya</h1>
+                <h1 class="app-page-title">Manage Leaves</h1>
                 <div class="row g-4 mb-4">
                     <div class="app-card app-card-chart h-100 shadow-sm">
                         <div class="app-card-header p-3 border-0">
-                            <h4 class="app-card-title">Add New Huduma Centres</h4>
+                            <h4 class="app-card-title">Add New Leaves</h4>
                         </div>
                         <!--//app-card-header-->
                         <div class="app-card-body">
-                            <form class="settings-form" method="POST">
-                                {% csrf_token %}
+                            <form class="settings-form">
                                 <div class="mb-3">
-                                    <label for="setting-input-1" class="form-label">Huduma Name<span class="ms-2" data-bs-container="body"
+                                    <label for="setting-input-1" class="form-label">Leave Type<span class="ms-2" data-bs-container="body"
                                             data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top"
                                             data-bs-content="This is a Bootstrap popover example. You can use popover to provide extra info."><svg
                                                 width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor"
@@ -53,14 +52,14 @@
                                                     d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z" />
                                                 <circle cx="8" cy="4.5" r="1" />
                                             </svg></span></label>
-                                    <input type="text" class="form-control" name="huduma-name" id="setting-input-1" placeholder="GPO Huduma Nairobi." required>
+                                    <input type="text" class="form-control" id="setting-input-1" placeholder="Annual Leave." required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="setting-input-2" class="form-label">Town Location</label>
-                                    <input type="text" class="form-control" name="location" id="setting-input-2" placeholder="Nairobi" required>
+                                    <label for="setting-input-2" class="form-label">Duration Assigned (in days)</label>
+                                    <input type="number" class="form-control" id="setting-input-2" placeholder="12" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="setting-input-3" class="form-label">Centre Manager Assigned</label>
+                                    <label for="setting-input-3" class="form-label"> Assigned</label>
                                     <input type="text" class="form-control" id="setting-input-3" placeholder="John Doe">
                                 </div>
                                 <button type="submit" class="btn app-btn-primary">Save</button>
@@ -83,20 +82,20 @@
                                     <thead>
                                         <tr>
                                             <th class="cell">s/no</th>
-                                            <th class="cell">Huduma Centres</th>
+                                            <th class="cell">Huduma Name</th>
                                             <th class="cell">Location</th>
-                                            <th class="cell">Date Added</th>
+                                            <th class="cell">CM Assigned</th>
                                             <th class="cell"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if centres %}
-                                        {% for c in centres %}
+                                        {% if pending %}
+                                        {% for p in pending %}
                                         <tr>
-                                            <td class="cell">{{ forloop.counter}}</td>
-                                            <td class="cell"><span class="truncate">{{ c.name}}</span></td>
-                                            <td class="cell">{{ c.location }}</td>
-                                            <td class="cell"><span class="cell-data">{{ c.created_at}}</span>
+                                            <td class="cell">232</td>
+                                            <td class="cell"><span class="truncate">{{ p.employee}}</span></td>
+                                            <td class="cell">{{ p.description }}</td>
+                                            <td class="cell"><span class="cell-data">{{ p.posting_date }}</span>
                                             </td>
                                             <td class="cell"><a class="btn-sm app-btn-secondary"
                                                     data-id="{{p.id}}"

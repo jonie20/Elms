@@ -23,8 +23,8 @@
                                     <p>Thank you for being a dedicated member of Huduma.</p>
                                 </div>
                                 <div class="col-12 col-lg-3">
-                                    <a class="btn btn-outline-success btn-sm border-primary" href="{% url 'apply_leave' %}">Apply Leave</a>
-                                </div>
+								    <a class="btn app-btn-primary" href="{% url 'apply_leave' %}">Apply leave</a>
+							    </div><!--//col--> 
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -138,7 +138,10 @@
                                                             </span>
                                                         </td>
                                                         <td class="cell">
-                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{application.id}}" 
+                                                            data-admin-remarks="{{ application.admin_remarks|default:'N/A' }}"
+                                                            data-employee-name="{{ application.status}}" 
+                                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -178,7 +181,7 @@
                                             <input type="text" class="form-control" id="setting-input-1" placeholder="John Doe" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="setting-input-2" class="form-label">Phone Number</label>
+                                            <label for="setting-input-2" class="form-label">Employee Name</label>
                                             <p><strong>Admin Remarks:</strong> <span id="modalAdminRemarks"></span></p>
                                         <button type="submit" class="btn app-btn-primary" >Pay Now</button>
                                     </form>
@@ -214,11 +217,11 @@
 
         // Extract data from attributes
         const adminRemarks = button.getAttribute('data-admin-remarks');
+        
 
         // Update modal content
         document.getElementById('modalAdminRemarks').textContent = adminRemarks;
     });
-</script>    
 </script>
 
 {% endblock %}

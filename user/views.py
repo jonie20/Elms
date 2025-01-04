@@ -78,7 +78,7 @@ class LoginView(View):
 
             # Redirect based on user's role or permissions
             if user.is_superuser or user.is_admin:  # For admin users
-                return redirect('/account/board')
+                return redirect('/accounts/board')
             else:  # For regular users
                 return redirect('dash')  # Ensure 'dash' is defined in urls.py
 
@@ -91,7 +91,6 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('login-view')
-
 
 class DashView(View):
     def get(self, request):
@@ -189,14 +188,29 @@ def leavehistory(request):
     return render(request, 'leaveHistory.html',
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
 
-@login_required()
+@login_required
 def board(request):
-    applications = LeaveApplication.objects.filter(employee=request.user).order_by('-id')
+    applications = LeaveApplication.objects.all().order_by('-id')
+    pending = LeaveApplication.objects.filter(status="Pending").order_by('-posting_date')
+    approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
+    rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
+    cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
 
-    return render(request, 'board/index.html', {'applications': applications})
+    context = {
+        "applications": applications,
+        "pending": pending,
+        "approved": approved,
+        "rejected": rejected,
+        "cancelled": cancelled,
+    }
 
 
 
+
+    return render(request, 'board/index.html', context)
+
+
+@login_required
 def add_employee(request):
     if request.method == 'POST':
         personal_number= request.POST.get('EmplId')
@@ -236,7 +250,7 @@ def add_employee(request):
 #
 #     return render(request, 'board/employee.html')
 
-
+@login_required
 def manage_employee(request):
     Employees = Account.objects.all().order_by('-id')
     # context = {
@@ -245,11 +259,31 @@ def manage_employee(request):
 
     return render(request, 'board/manageEmpl.html', {'Employees': Employees})
 
-
+@login_required
 def add_notice(request):
-    # leave_applications = LeaveApplication.objects.all()
-    # context = {
-    #         'leave_applications': leave_applications,
-    # }
+    
 
     return render(request, 'board/notice.html')
+@login_required
+def manage_centres(request):
+
+    if request.method == 'POST':
+        huduma_name= request.POST.get('huduma-name')
+        location = request.POST.get('location')
+
+        query = HudumaCentre(name=huduma_name, location=location)
+        query.save()
+
+    centres = HudumaCentre.objects.all().order_by('created_at')
+
+    return render(request, 'board/centres.html', {'centres' : centres})
+@login_required
+def manage_leaves(request):
+    
+
+    return render(request, 'board/leaves.html')
+
+def set_pass(request):
+    
+
+    return render(request, 'reset-password.html')
