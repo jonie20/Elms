@@ -92,13 +92,6 @@ class Account(AbstractBaseUser):
     is_manager = models.BooleanField(default=False)
     total_leave_days = models.IntegerField(default=0)
 
-    supervisor = models.ForeignKey(
-        'self',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='supervised_employees'
-    )
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

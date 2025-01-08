@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="b4 permissions">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/board/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/board/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/board/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/sidebar.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +61,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.python.django.customization.DjangoModulesConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -112,7 +120,10 @@
       <workItem from="1734541951585" duration="1270000" />
       <workItem from="1734767254325" duration="9040000" />
       <workItem from="1735967246362" duration="1717000" />
-      <workItem from="1735976499982" duration="295000" />
+      <workItem from="1735976499982" duration="700000" />
+      <workItem from="1735977215565" duration="1651000" />
+      <workItem from="1736139360130" duration="6981000" />
+      <workItem from="1736308299640" duration="5418000" />
     </task>
     <task id="LOCAL-00001" summary="MODEL">
       <option name="closed" value="true" />
