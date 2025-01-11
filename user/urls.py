@@ -16,7 +16,8 @@ urlpatterns = [
     path('manage-leaves', views.manage_leaves, name="manage-leaves"),
     path('manage-employee', views.manage_employee, name="manage-employee"),
     path('add-notice', views.add_notice, name="add-notice"),
-    path('setpassword', views.set_pass, name="reset_pass")
+    path('setpassword', views.set_pass, name="reset_pass"),
+    path('update-leave/<int:pk>/', views.update_leave_status, name='update_leave_status'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

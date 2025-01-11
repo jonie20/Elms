@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="b4 permissions">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="board budges">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/employee.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/templates/board/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +121,10 @@
       <workItem from="1735976499982" duration="700000" />
       <workItem from="1735977215565" duration="1651000" />
       <workItem from="1736139360130" duration="6981000" />
-      <workItem from="1736308299640" duration="5418000" />
+      <workItem from="1736308299640" duration="5747000" />
+      <workItem from="1736351866159" duration="10637000" />
+      <workItem from="1736513511964" duration="9633000" />
+      <workItem from="1736595079133" duration="10814000" />
     </task>
     <task id="LOCAL-00001" summary="MODEL">
       <option name="closed" value="true" />
@@ -149,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734775458611</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="board budges">
+      <option name="closed" value="true" />
+      <created>1736323922319</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1736323922319</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +168,7 @@
     <MESSAGE value="MODEL" />
     <MESSAGE value="huduma" />
     <MESSAGE value="b4 permissions" />
-    <option name="LAST_COMMIT_MESSAGE" value="b4 permissions" />
+    <MESSAGE value="board budges" />
+    <option name="LAST_COMMIT_MESSAGE" value="board budges" />
   </component>
 </project>

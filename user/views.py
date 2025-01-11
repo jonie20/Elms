@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
 
 from user.models import Account, LeaveApplication, HudumaCentre
-
 
 
 class RegisterView(View):
@@ -77,7 +77,7 @@ class LoginView(View):
             login(request, user)
 
             # Redirect based on user's role or permissions
-            if user.is_superuser or user.is_admin:  # For admin users
+            if user.is_superuser or user.is_admin or user.is_manager or user.is_CEO:  # For admin users
                 return redirect('/accounts/board')
             else:  # For regular users
                 return redirect('dash')  # Ensure 'dash' is defined in urls.py
@@ -91,6 +91,7 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('login-view')
+
 
 class DashView(View):
     def get(self, request):
@@ -166,11 +167,11 @@ def apply_leave(request):
             to_date=to_date_obj,
             description=description,
             employee=request.user,
-
         )
-        leave_application.save()
+        leave_application.save()  # `id` is automatically set here
+
         messages.success(request, "Leave application submitted successfully.")
-        return redirect('dash')
+        return redirect('dash')  # This should be the redirect to the user's dashboard (or any relevant page)
 
     return render(request, 'apply_leave.html')
 
@@ -188,6 +189,7 @@ def leavehistory(request):
     return render(request, 'leaveHistory.html',
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
 
+
 @login_required
 def board(request):
     applications = LeaveApplication.objects.all().order_by('-id')
@@ -204,16 +206,13 @@ def board(request):
         "cancelled": cancelled,
     }
 
-
-
-
     return render(request, 'board/index.html', context)
 
 
 @login_required
 def add_employee(request):
     if request.method == 'POST':
-        personal_number= request.POST.get('EmplId')
+        personal_number = request.POST.get('EmplId')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
@@ -222,10 +221,12 @@ def add_employee(request):
         gender = request.POST.get('from_date')
         department = request.POST.get('from_date')
 
-        query = Account(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number,personal_number=personal_number,gender=gender, department=department)
+        query = Account(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number,
+                        personal_number=personal_number, gender=gender, department=department)
         query.save()
 
     return render(request, 'board/employee.html')
+
 
 # def add_employee(request):
 #     if request.method == 'POST':
@@ -259,16 +260,16 @@ def manage_employee(request):
 
     return render(request, 'board/manageEmpl.html', {'Employees': Employees})
 
+
 @login_required
 def add_notice(request):
-    
-
     return render(request, 'board/notice.html')
+
+
 @login_required
 def manage_centres(request):
-
     if request.method == 'POST':
-        huduma_name= request.POST.get('huduma-name')
+        huduma_name = request.POST.get('huduma-name')
         location = request.POST.get('location')
 
         query = HudumaCentre(name=huduma_name, location=location)
@@ -276,14 +277,32 @@ def manage_centres(request):
 
     centres = HudumaCentre.objects.all().order_by('created_at')
 
-    return render(request, 'board/centres.html', {'centres' : centres})
+    return render(request, 'board/centres.html', {'centres': centres})
+
+
 @login_required
 def manage_leaves(request):
-    
-
     return render(request, 'board/leaves.html')
 
-def set_pass(request):
-    
 
+def set_pass(request):
     return render(request, 'reset-password.html')
+
+
+
+def update_leave_status(request, pk):
+    account = Account.objects.get(pk=pk)
+    leave_application = get_object_or_404(LeaveApplication, pk=pk)  # Make sure `pk` is valid and corresponds to an existing record
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        admin_remarks = request.POST.get('admin_remarks')
+        if status:
+            leave_application.status = status
+        if admin_remarks:
+            leave_application.admin_remarks = admin_remarks
+        leave_application.save()
+
+        return redirect('board:index', {'leave_application': leave_application},{'account':account})  # Ensure this points to a valid URL pattern
+
+    return redirect('board:index' ,{'leave_application': leave_application},{'account':account})  # Ensure this points to a valid URL pattern
+

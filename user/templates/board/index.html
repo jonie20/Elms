@@ -189,13 +189,16 @@
                                                         </td>
                                                         <td class="cell"><span
                                                                 class="badge bg-warning">{{ p.status }}</span></td>
-                                                        <td class="cell">{{ a.no_of_days }}</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary"
-                                                                            data-id="{{ p.id }}"
-                                                                            data-admin-remarks="{{ p.admin_remarks|default:'N/A' }}"
-                                                                            data-employee-name="{{ p.employee }}"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#staticBackdrop" href="#">View</a>
+                                                        <td class="cell">{{ p.no_of_days }}</td>
+                                                        <td class="cell">
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{p.id}}" 
+                                                            data-admin-remarks="{{ p.admin_remarks|default:'N/A' }}"
+                                                               data-from-date="{{ p.from_date }}"
+                                                               data-to-date="{{ p.to_date }}"
+                                                               data-date-applied="{{ p.posting_date }}"
+                                                               data-status="{{ p.status }}"
+                                                               data-employee="{{ p.employee }}"
+                                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
 
 
@@ -231,7 +234,8 @@
                                                 <th class="cell">Apply/Date</th>
                                                 <th class="cell">Status</th>
                                                 <th class="cell">Days applied</th>
-                                                <th class="cell"></th>
+                                                
+                                                <th class="cell">Action</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -244,29 +248,34 @@
                                                         <td class="cell">{{ a.employee.designation }}</td>
                                                         <td class="cell"><span>{{ a.posting_date }}</span></td>
                                                         <td class="cell">
-            <span class="badge 
-                {% if a.status == 'Approved' %}
-                    bg-success
-                {% elif a.status == 'Rejected' %}
-                    bg-danger
-                {% elif a.status == 'Pending' %}
-                    bg-warning
-                {% elif a.status == 'Cancelled' %}
-                    bg-secondary
-                {% else %}
-                    bg-light
-                {% endif %}
-            ">
-                {{ a.status }}
-            </span>
+                                                            <span class="badge 
+                                                            {% if a.status == 'Approved' %}
+                                                            bg-success
+                                                            {% elif a.status == 'Rejected' %}
+                                                            bg-danger
+                                                            {% elif a.status == 'Pending' %}
+                                                            bg-warning
+                                                            {% elif a.status == 'Cancelled' %}
+                                                            bg-secondary
+                                                            {% else %}
+                                                            bg-light
+                                                            {% endif %}
+                                                            ">
+                                                            {{ a.status }}
+                                                            </span>
                                                         </td>
-                                                        <td class="cell">{{ a.no_of_days }}</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary"
-                                                                            data-id="{{ a.id }}"
-                                                                            data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}"
-                                                                            data-employee-name="{{ a.employee }}"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#staticBackdrop" href="#">View</a>
+                                                     <td class="cell">{{ a.no_of_days }}</td>
+                                                    
+                                                        
+                                                         <td class="cell">
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{a.id}}" 
+                                                            data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}"
+                                                               data-from-date="{{ a.from_date }}"
+                                                               data-to-date="{{ a.to_date }}"
+                                                               data-date-applied="{{ r.posting_date }}"
+                                                               
+                                                               data-employee="{{ a.employee }}"
+                                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -332,12 +341,15 @@
                                                         <td class="cell"><span
                                                                 class="badge bg-success">{{ a.status }}</span></td>
                                                         <td class="cell">{{ a.no_of_days }}</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary"
-                                                                            data-id="{{ a.id }}"
-                                                                            data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}"
-                                                                            data-employee-name="{{ a.employee }}"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#staticBackdrop" href="#">View</a>
+                                                        <td class="cell">
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{a.id}}" 
+                                                            data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}"
+                                                               data-from-date="{{ a.from_date }}"
+                                                               data-to-date="{{ a.to_date }}"
+                                                               data-date-applied="{{ a.posting_date }}"
+                                                               data-status="{{ a.status }}"
+                                                               data-employee="{{ a.employee }}"
+                                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -388,12 +400,20 @@
                                                         <td class="cell"><span
                                                                 class="truncate">{{ r.employee.designation }}</span>
                                                         </td>
-                                                        <td class="cell"><span>{{ r.posting_date }}</span>
+                                                        <td class="cell"><span>{{ r.posting_date  }}</span>
                                                         </td>
                                                         <td class="cell"><span
                                                                 class="badge bg-danger">{{ r.status }}</span></td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary"
-                                                                            href="#">View</a></td>
+                                                        <td class="cell">
+                                                            <a class="btn-sm app-btn-secondary" data-id="{{p.id}}" 
+                                                            data-admin-remarks="{{ r.admin_remarks|default:'N/A' }}"
+                                                               data-from-date="{{ r.from_date }}"
+                                                               data-to-date="{{ r.to_date }}"
+                                                               data-date-applied="{{ r.posting_date }}"
+                                                               data-status="{{ r.status }}"
+                                                               data-employee="{{ r.employee }}"
+                                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                             {% else %}
@@ -428,85 +448,72 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Payment Information</h5>
+                        <h5 class="modal-title" id="updateLeaveModalLabel">Update Leave Application</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="app-card app-card-settings shadow-sm p-4">
-
-                            <div class="app-card-body">
-                                <form class="settings-form">
-                                    <div class="mb-3">
-                                        <label for="setting-input-1" class="form-label">Customer Name<span class="ms-2"
-                                                                                                           data-bs-container="body"
-                                                                                                           data-bs-toggle="popover"
-                                                                                                           data-bs-trigger="hover focus"
-                                                                                                           data-bs-placement="top"
-                                                                                                           data-bs-content="This is a Bootstrap popover example. You can use popover to provide extra info."><svg
-                                                width="1em" height="1em" viewBox="0 0 16 16"
-                                                class="bi bi-info-circle" fill="currentColor"
-                                                xmlns="http://www.w3.org/2000/svg">
-													<path fill-rule="evenodd"
-                                                          d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-													<path
-                                                            d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
-													<circle cx="8" cy="4.5" r="1"/>
-												</svg></span></label>
-                                        <!-- <input type="text" class="form-control" id="setting-input-1"
-                                            placeholder="John Doe" required> -->
-                                        <span id="modalEmployeeName"></span>
-                                    </div>
-                                    <div class="app-card app-card-settings shadow-sm p-4">
-
-                                        <div class="app-card-body">
-                                            <div class="mb-2"><strong>Employee Name:</strong> <span
-                                                    id="modalEmployeeName"></span></div>
-                                            <div class="mb-2"><strong>Date Applied:</strong></div>
-                                            <div class="mb-2"><strong>From date:</strong> 2030-09-24</div>
-                                            <div class="mb-2"><strong>To date:</strong> 2030-09-24</div>
-                                            <div class="mb-4"><strong>Status:</strong> <span
-                                                    class="badge bg-success">Active</span></div>
-
-                                            <div class="mb-3">
-                                                <label for="setting-input-3" class="form-label">Status</label>
-                                                <select class="form-select" name="status" id="setting-input-2"
-                                                        aria-label="Status">
-                                                    <option selected value="">Select Status</option>
-                                                    {% for centre in huduma_centre %}
-                                                        <option value="{{ centre.id }}">{{ centre.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-
-
-                                            <div class="row justify-content-between">
-                                                <div class="col-auto">
-                                                    <a class="btn app-btn-primary" href="#">Upgrade Plan</a>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a class="btn app-btn-secondary" href="#">Cancel Plan</a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <!--//app-card-body-->
-
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="setting-input-2" class="form-label">Employee Name</label><span
-                                            id="modalEmployeeName"></span>
-                                        <p><strong>Admin Remarks:</strong> <span id="modalAdminRemarks"></span></p>
-                                        <button type="submit" class="btn app-btn-primary">Update</button>
-                                </form>
+{#                    {% if leave_application.id %}#}
+                        <form method="post" action="{% url 'update_leave_status'  %}">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <!-- Employee Name -->
+                                <div class="mb-3">
+                                    <label for="employeeName" class="form-label"><strong>Employee Name:</strong></label>
+                                    <input type="text" class="form-control" id="employee" readonly>
+                                </div>
+                                <!-- Date Applied -->
+                                <div class="mb-3">
+                                    <label for="postingDate" class="form-label"><strong>Date Applied:</strong></label>
+                                    <input type="text" class="form-control" id="dateapplied" readonly>
+                                </div>
+                                <!-- From Date -->
+                                <div class="mb-3">
+                                    <label for="fromDate" class="form-label"><strong>From Date:</strong></label>
+                                    <input type="text" class="form-control" id="fromdate" readonly>
+                                </div>
+                                <!-- To Date -->
+                                <div class="mb-3">
+                                    <label for="toDate" class="form-label"><strong>To Date:</strong></label>
+                                    <input type="text" class="form-control" id="todate" readonly>
+                                </div>
+                                <!-- Status -->
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" name="status" id="status" required>
+                                        <option value="Pending"
+                                                {% if leave_application.status == "Pending" %}selected{% endif %}>
+                                            Pending
+                                        </option>
+                                        <option value="Approved"
+                                                {% if leave_application.status == "Approved" %}selected{% endif %}>
+                                            Approved
+                                        </option>
+                                        <option value="Rejected"
+                                                {% if leave_application.status == "Rejected" %}selected{% endif %}>
+                                            Rejected
+                                        </option>
+                                        <option value="Cancelled"
+                                                {% if leave_application.status == "Cancelled" %}selected{% endif %}>
+                                            Cancelled
+                                        </option>
+                                    </select>
+                                </div>
+                                <!-- Admin Remarks -->
+                                <div class="mb-3">
+                                    <label for="adminRemarks" class="form-label">Admin Remarks</label>
+                                    <textarea class="form-control" name="admin_remarks" id="adminRemarks" rows="3"
+                                              required></textarea>
+                                </div>
+                                <!-- Hidden Field for Leave Application ID -->
+                                <input type="hidden" name="leave_application_id" value="{{ leave_application.id }}">
                             </div>
-                            <!--//app-card-body-->
-
-                        </div>
-                    </div>
-                    <!-- <div class="modal-footer">
-                        <button type="button" class="btn app-btn-secondary" data-bs-dismiss="modal"> Close</button>
-                        <button type="button" class="btn app-btn-primary">Pay Now</button>
-                    </div> -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Apply Changes</button>
+                            </div>
+                        </form>
+{#                    {% else %}#}
+{#                        <p>Error: Leave application ID is missing.</p>#}
+{#                    {% endif %}#}
                 </div>
             </div>
         </div>
@@ -514,11 +521,11 @@
 
         <footer class="app-footer">
             <div class="container text-center py-3">
-                <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+
                 <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
                                                                                            style="color: #fb866a;"></i>
-                    by <a class="app-link" href="http://themes.3rdwavemedia.com"
-                          target="_blank">Xiaoying Riley</a> for developers</small>
+                    by <a class="app-link" href=""
+                          target="_blank">Nandi Dev</a> For Huduma</small>
 
             </div>
         </footer>
@@ -527,23 +534,32 @@
     </div>
     <!--//app-wrapper-->
 
-    <script>
-        // JavaScript to handle modal data population
-        const staticBackdropModal = document.getElementById('staticBackdrop');
-
-        staticBackdropModal.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            const button = event.relatedTarget;
-
-            // Extract data from attributes
-            const adminRemarks = button.getAttribute('data-admin-remarks');
-            const EmployeeName = button.getAttribute('data-employee-name');
-
-            // Update modal content
-            document.getElementById('modalAdminRemarks').textContent = adminRemarks;
-            document.getElementById('modalEmployeeName').textContent = EmployeeName;
-        });
-    </script>
+        <script>
+            // JavaScript to handle modal data population
+            const staticBackdropModal = document.getElementById('staticBackdrop');
+        
+            staticBackdropModal.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                const button = event.relatedTarget;
+        
+                // Extract data from attributes
+                const adminRemarks = button.getAttribute('data-admin-remarks');
+                const employee = button.getAttribute('data-employee');
+                const from_date = button.getAttribute('data-from-date');
+                const to_date = button.getAttribute('data-to-date');
+                const date_applied = button.getAttribute('data-date-applied');
+                const status = button.getAttribute('data-status');
+                
+        
+                // Update modal content
+                document.getElementById('adminRemarks').value = adminRemarks;
+                document.getElementById('employee').value = employee;
+                document.getElementById('fromdate').value = from_date;
+                document.getElementById('todate').value = to_date;
+                document.getElementById('dateapplied').value = date_applied;
+                document.getElementById('status').value = status;
+            });
+        </script>
 
 {% endblock %}
 {% block title %}Home{% endblock %}
