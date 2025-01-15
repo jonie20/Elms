@@ -27,6 +27,7 @@
 
                                 <form class="settings-form row" method="POST">
                                     {% csrf_token %}
+                                    <h1 class="app-page-title"><span id="result"></span></h1>
                                     <div class="col-12 col-lg-6">
                                         <div class="mb-3">
                                             <label for="setting-input-1" class="form-label">From Date<span class="ms-2"
@@ -61,7 +62,7 @@
 	  <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
 	  <circle cx="8" cy="4.5" r="1"/>
 	</svg></span></label>
-                                            <input type="date" class="form-control" name="to_date" id="endDate"
+                                            <input type="date" class="form-control" name="to_date" id="endDate" onchange="calculatedays()"
                                                    value="Lorem Ipsum Ltd." required>
                                         </div>
                                     </div>
@@ -157,7 +158,21 @@
 				// Set the minimum date of the "End Date" input to the next day
 				document.getElementById("endDate").setAttribute("min", nextDay);
 			}
-		}		
+		}
+
+        function calculatedays(){
+             var fromdate = new Date (document.getElementById("myDate").value);
+             var todate = new Date(document.getElementById("endDate").value);
+
+             if (fromdate && todate){
+                 var difference = todate - fromdate;
+                 var days = Math.ceil(difference/(1000 * 60 * 60 * 24));
+                 document.getElementById("result").innerHTML = days + ' days applied';
+
+             }else{
+                 document.getElementById("result").innerHTML = "";
+             }
+        }		
   
  
  

@@ -176,8 +176,6 @@ def apply_leave(request):
         return redirect('dash')  # Redirect to user's dashboard or any relevant page
 
     return render(request, 'apply_leave.html')
-
-
 @login_required
 def leavehistory(request):
     status_filter = request.GET.get('status', 'all')
