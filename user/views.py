@@ -161,6 +161,8 @@ def apply_leave(request):
             messages.error(request, "You do not have enough leave days available.")
             return redirect('apply_leave')
 
+            
+
         leave_application = LeaveApplication(
             leave_type=leave_type,
             from_date=from_date_obj,
@@ -168,6 +170,8 @@ def apply_leave(request):
             description=description,
             employee=request.user,
         )
+
+
         leave_application.save()  # `id` is automatically set here
 
         messages.success(request, "Leave application submitted successfully.")
