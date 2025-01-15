@@ -17,7 +17,8 @@ urlpatterns = [
     path('manage-employee', views.manage_employee, name="manage-employee"),
     path('add-notice', views.add_notice, name="add-notice"),
     path('setpassword', views.set_pass, name="reset_pass"),
-    path('update-leave/<int:pk>/', views.update_leave_status, name='update_leave_status'),
+    # path('update-leave/<int:pk>/', views.update_leave_status, name='update_leave_status'),
+    path('updateda/<int:id>/', views.update_leave_application, name='update_leave_application'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

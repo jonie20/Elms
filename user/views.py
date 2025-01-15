@@ -128,6 +128,8 @@ def apply_leave(request):
         to_date = request.POST.get('to_date')
         description = request.POST.get('description')
 
+
+
         if LeaveApplication.objects.filter(employee=request.user, status='Pending').exists():
             messages.error(request, "You cannot apply for leave while a previous application is pending.")
             return redirect('apply_leave')
@@ -232,29 +234,6 @@ def add_employee(request):
     return render(request, 'board/employee.html')
 
 
-# def add_employee(request):
-#     if request.method == 'POST':
-#         personal_number = request.POST.get('EmplId')
-#         first_name = request.POST.get('first_name')
-#         last_name = request.POST.get('last_name')
-#         username = request.POST.get('first_name')
-#         email = request.POST.get('email')
-#         phone_number = request.POST.get('phone_number')
-#         # date_of_birth = request.POST.get('date_of_birth')
-#         gender = request.POST.get('from_date')
-#         designation = request.POST.get('designation')
-#         profile_picture = request.POST.get('profile_picture')
-#
-#         query = Account(first_name=first_name, last_name=last_name, email=email,
-#                         phone_number=phone_number, personal_number=personal_number, gender=gender,
-#                         designation=designation, profile_picture=profile_picture)
-#         query.save()
-#         user = AccountAuthentication.authenticate(request, email=request.POST['email'],
-#                                                   password=request.POST['password1'])
-#         login(request, user)
-#
-#     return render(request, 'board/employee.html')
-
 @login_required
 def manage_employee(request):
     Employees = Account.objects.all().order_by('-id')
@@ -294,19 +273,16 @@ def set_pass(request):
 
 
 
-def update_leave_status(request, pk):
-    account = Account.objects.get(pk=pk)
-    leave_application = get_object_or_404(LeaveApplication, pk=pk)  # Make sure `pk` is valid and corresponds to an existing record
-    if request.method == 'POST':
-        status = request.POST.get('status')
-        admin_remarks = request.POST.get('admin_remarks')
-        if status:
-            leave_application.status = status
-        if admin_remarks:
-            leave_application.admin_remarks = admin_remarks
+
+def update_leave_application(request, id):
+    leave_application = get_object_or_404(LeaveApplication, id=id)
+    if request.method == "POST":
+        print(leave_application.id)
+        leave_application.status = request.POST.get('status')
+        leave_application.admin_remarks = request.POST.get('admin_remarks')
         leave_application.save()
-
-        return redirect('board:index', {'leave_application': leave_application},{'account':account})  # Ensure this points to a valid URL pattern
-
-    return redirect('board:index' ,{'leave_application': leave_application},{'account':account})  # Ensure this points to a valid URL pattern
-
+        messages.success(request, "Leave application updated successfully!")
+        return redirect('dashboard')  # Replace with your dashboard view name
+    else:
+        messages.error(request, "Invalid request.")
+        return redirect('dashboard')
