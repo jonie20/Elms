@@ -5,12 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="modal">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0009_alter_account_profile_picture.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0010_account_phone_number.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0011_hudumacentre_remove_account_huduma_centre_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0012_account_huduma_centre.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0013_account_phone_number_alter_account_designation_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0014_rename_is_staff_account_is_ceo_account_is_manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/migrations/0015_account_is_staff.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

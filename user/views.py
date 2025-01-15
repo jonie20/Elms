@@ -128,8 +128,6 @@ def apply_leave(request):
         to_date = request.POST.get('to_date')
         description = request.POST.get('description')
 
-
-
         if LeaveApplication.objects.filter(employee=request.user, status='Pending').exists():
             messages.error(request, "You cannot apply for leave while a previous application is pending.")
             return redirect('apply_leave')
@@ -157,12 +155,6 @@ def apply_leave(request):
             messages.error(request, "End date cannot be earlier than the start date.")
             return redirect('apply_leave')
 
-        total_days = (to_date_obj - from_date_obj).days + 1
-
-        if total_days > request.user.total_leave_days:
-            messages.error(request, "You do not have enough leave days available.")
-            return redirect('apply_leave')
-
         leave_application = LeaveApplication(
             leave_type=leave_type,
             from_date=from_date_obj,
@@ -170,10 +162,18 @@ def apply_leave(request):
             description=description,
             employee=request.user,
         )
-        leave_application.save()  # `id` is automatically set here
+
+        # Calculate the number of working days (excluding weekends and holidays)
+        leave_application.no_of_days = leave_application.calculate_working_days()
+
+        if leave_application.no_of_days > request.user.total_leave_days:
+            messages.error(request, "You do not have enough leave days available.")
+            return redirect('apply_leave')
+
+        leave_application.save()
 
         messages.success(request, "Leave application submitted successfully.")
-        return redirect('dash')  # This should be the redirect to the user's dashboard (or any relevant page)
+        return redirect('dash')  # Redirect to user's dashboard or any relevant page
 
     return render(request, 'apply_leave.html')
 

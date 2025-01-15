@@ -1,6 +1,6 @@
 import os
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
@@ -107,6 +107,16 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+class Holiday(models.Model):
+    name = models.CharField(max_length=255)
+    holiday_date = models.DateField()
+
+    def _str_(self):
+        return f"{self.name} on {self.holiday_date}"
+
+    class Meta:
+        verbose_name = "Holiday"
+        verbose_name_plural = "Holidays"
 
 # Leave Application Model
 class LeaveApplication(models.Model):
@@ -143,5 +153,24 @@ class LeaveApplication(models.Model):
         if self.to_date < self.from_date:
             raise ValueError("End date cannot be earlier than the start date.")
 
-    def __str__(self):
+    def calculate_working_days(self):
+        holidays = Holiday.objects.values_list('holiday_date', flat=True)
+        total_days = 0
+        current_date = self.from_date
+
+        while current_date <= self.to_date:
+            # Exclude weekends (Saturday=5, Sunday=6) and holidays
+            if current_date.weekday() < 5 and current_date not in holidays:
+                total_days += 1
+            current_date += timedelta(days=1)
+
+        return total_days
+
+    def save(self, *args, **kwargs):
+        self.no_of_days = self.calculate_working_days()
+        super().save(*args, **kwargs)
+
+    def _str_(self):
         return f"{self.employee.username} - {self.get_leave_type_display()} ({self.status})"
+
+
