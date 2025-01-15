@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from user.models import Account, LeaveApplication, HudumaCentre
+from user.models import Account, LeaveApplication, HudumaCentre, Holiday
 
 
 class LeaveApplicationAdmin(admin.ModelAdmin):
@@ -56,3 +56,8 @@ class HudumaCentreAdmin(admin.ModelAdmin):
 
 
 admin.site.register(HudumaCentre, HudumaCentreAdmin)
+class HolidayAdmin(admin.ModelAdmin):
+    list_display = ('name', 'holiday_date')  # Display the name and holiday date
+    search_fields = ('name',)  # Allow searching by name
+
+admin.site.register(Holiday, HolidayAdmin)
