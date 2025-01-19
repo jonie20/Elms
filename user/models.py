@@ -13,6 +13,8 @@ def generate_unique_name(instance, filename):
 
 
 # Custom User Manager
+from django.contrib.auth.models import BaseUserManager
+
 class AccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
         if not email:
@@ -37,8 +39,8 @@ class AccountManager(BaseUserManager):
         user.is_admin = True
         user.is_superuser = True
         user.is_staff = True
-        user.is_CE0 = True
-        user.is_Manager = True
+        user.is_CEO = True
+        user.is_manager = True
         user.save(using=self._db)
         return user
 
@@ -54,7 +56,10 @@ class HudumaCentre(models.Model):
 
 
 # Custom User Model
-class Account(AbstractBaseUser):
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django.db import models
+
+class Account(AbstractBaseUser, PermissionsMixin):
     DESIGNATION_CHOICES = [
         ('ICT', 'ICT'),
         ('TEA GIRL', 'TEA GIRL'),
@@ -74,7 +79,7 @@ class Account(AbstractBaseUser):
     last_name = models.CharField(max_length=80)
     id_number = models.CharField(max_length=20, unique=True, null=True)
     personal_number = models.CharField(max_length=20, unique=True, null=True)
-    phone_number = models.CharField(max_length=10, null=True)  # Changed to CharField
+    phone_number = models.CharField(max_length=10, null=True)
     designation = models.CharField(max_length=50, choices=DESIGNATION_CHOICES, null=True, blank=True)
     gender = models.CharField(
         max_length=10,
@@ -91,7 +96,6 @@ class Account(AbstractBaseUser):
     is_CEO = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
     total_leave_days = models.IntegerField(default=0)
-
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
@@ -165,6 +169,7 @@ class LeaveApplication(models.Model):
             current_date += timedelta(days=1)
 
         return total_days
+
 
     def save(self, *args, **kwargs):
         self.no_of_days = self.calculate_working_days()

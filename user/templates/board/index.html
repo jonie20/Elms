@@ -269,10 +269,12 @@
 
                                                          <td class="cell">
                                                             <a class="btn-sm app-btn-secondary" data-id="{{a.id}}"
-                                                            data-admin-remarks="{{ a.admin_remarks|default:'N/A' }}"
+                                                            data-admin-remarks="{{ a.admin_remarks|default:''}}"
                                                                data-from-date="{{ a.from_date }}"
+                                                               
                                                                data-to-date="{{ a.to_date }}"
-                                                               data-date-applied="{{ r.posting_date }}"
+                                                               data-date-applied="{{ a.posting_date }}"
+                                                               data-status="{{ a.status }}"
 
                                                                data-employee="{{ a.employee }}"
                                                             data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
@@ -458,22 +460,22 @@
                     <!-- Employee Name -->
                     <div class="mb-3">
                         <label for="employeeName" class="form-label"><strong>Employee Name:</strong></label>
-                        <input type="text" class="form-control" id="employee" readonly>
+                        <input type="text" class="form-control form-control-sm" id="employee" readonly>
                     </div>
                     <!-- Date Applied -->
                     <div class="mb-3">
                         <label for="postingDate" class="form-label"><strong>Date Applied:</strong></label>
-                        <input type="text" class="form-control" id="dateapplied" readonly>
+                        <input type="text" class="form-control form-control-sm" id="dateapplied" readonly>
                     </div>
                     <!-- From Date -->
                     <div class="mb-3">
                         <label for="fromDate" class="form-label"><strong>From Date:</strong></label>
-                        <input type="text" class="form-control" id="fromdate" readonly>
+                        <input type="text" class="form-control form-control-sm" id="fromdate" readonly>
                     </div>
                     <!-- To Date -->
                     <div class="mb-3">
                         <label for="toDate" class="form-label"><strong>To Date:</strong></label>
-                        <input type="text" class="form-control" id="todate" readonly>
+                        <input type="text" class="form-control form-control-sm" id="todate" readonly>
                     </div>
                     <!-- Status -->
                     <div class="mb-3">

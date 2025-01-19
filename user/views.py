@@ -1,22 +1,71 @@
 from datetime import datetime, timedelta
 from django.contrib import messages
+<<<<<<< HEAD
 from django.http import JsonResponse
 from django.conf import settings
+=======
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import Group
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.views import View
+<<<<<<< HEAD
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.contrib.auth import login, logout
+=======
+from django.contrib.auth import login, logout, authenticate
+
 from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
+from user.forms import GroupForm, AssignGroupForm
 
 from user.models import Account, LeaveApplication, HudumaCentre
 
 
+def group_required(*group_names):
+    def decorator(view_func):
+        @login_required
+        def _wrapped_view(request, *args, **kwargs):
+            if request.user.groups.filter(name__in=group_names).exists() or request.user.is_superuser:
+                return view_func(request, *args, **kwargs)
+            raise PermissionDenied
+
+        return _wrapped_view
+
+    return decorator
+
+
+def manage_groups(request):
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            group = form.save()
+            return redirect('manage_groups')
+    else:
+        form = GroupForm()
+    groups = Group.objects.all()
+    return render(request, 'board/manage_groups.html', {'form': form, 'groups': groups})
+
+
+def assign_group(request):
+    if request.method == 'POST':
+        form = AssignGroupForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['user']
+            group = form.cleaned_data['group']
+            user.groups.add(group)
+            return redirect('assign_group')
+    else:
+        form = AssignGroupForm()
+    return render(request, 'board/assign_group.html', {'form': form})
+
+@group_required('Admin', 'CEO', 'Manager')
+@login_required
 class RegisterView(View):
     def get(self, request):
         # Render the form with all available Huduma Centres
@@ -183,6 +232,8 @@ def apply_leave(request):
         return redirect('dash')  # Redirect to user's dashboard or any relevant page
 
     return render(request, 'apply_leave.html')
+
+
 @login_required
 def leavehistory(request):
     status_filter = request.GET.get('status', 'all')
@@ -197,13 +248,31 @@ def leavehistory(request):
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
 
 
+
+@group_required('Admin', 'CEO', 'Manager')
 @login_required
 def board(request):
-    applications = LeaveApplication.objects.all().order_by('-id')
-    pending = LeaveApplication.objects.filter(status="Pending").order_by('-posting_date')
-    approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
-    rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
-    cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
+    if request.user.is_superuser or request.user.groups.filter(name__in=['CEO', 'Admin']).exists():
+        # Superuser, CEO, and Admin can view all leave applications
+        applications = LeaveApplication.objects.all().order_by('-id')
+        pending = LeaveApplication.objects.filter(status="Pending").order_by('-posting_date')
+        approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
+        rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
+        cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
+    elif request.user.groups.filter(name='Manager').exists():
+        # Manager can only view leave applications for their huduma_centre
+        if request.user.huduma_centre:
+            applications = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre).order_by('-id')
+            pending = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Pending").order_by('-posting_date')
+            approved = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Approved").order_by('-posting_date')
+            rejected = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Rejected").order_by('-posting_date')
+            cancelled = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Cancelled").order_by('-posting_date')
+        else:
+            # If the manager doesn't have a huduma_centre assigned, handle it appropriately
+            return redirect('no_huduma_centre')  # Replace with an appropriate page or message
+    else:
+        # Redirect users who are not allowed
+        return redirect('permission_denied')  # You can replace this with your desired page or view
 
     context = {
         "applications": applications,
@@ -216,33 +285,33 @@ def board(request):
     return render(request, 'board/index.html', context)
 
 
-@login_required
-def add_employee(request):
-    if request.method == 'POST':
-        personal_number = request.POST.get('EmplId')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        # date_of_birth = request.POST.get('date_of_birth')
-        gender = request.POST.get('from_date')
-        department = request.POST.get('from_date')
-
-        query = Account(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number,
-                        personal_number=personal_number, gender=gender, department=department)
-        query.save()
-
-    return render(request, 'board/employee.html')
-
 
 @login_required
 def manage_employee(request):
-    Employees = Account.objects.all().order_by('-id')
-    # context = {
-    #     'Employees' : Employees
-    # }
+    # Check if the user is a superuser or belongs to the allowed groups
+    if request.user.is_superuser or request.user.is_CEO:
+        # Superuser (admin) has access to everything
+        employees = Account.objects.all().order_by('-id')
+    elif request.user.groups.filter(name__in=['Manager', 'CEO', 'Admin']).exists():
+        # Check if user is part of the 'Manager', 'CEO', or 'Admin' groups
+        if request.user.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
+            employees = Account.objects.filter(huduma_centre=request.user.huduma_centre).order_by('-id')
+        else:
+            # If the user doesn't have a 'huduma_centre', handle it appropriately
+            return redirect('no_huduma_centre')  # Replace with an appropriate page or message
+    else:
+        # Redirect users who are not allowed
+        return redirect('permission_denied')  # You can replace this with your desired page or view
+    paginator = Paginator(employees, 10)
+    page_no = request.GET.get('page',1)
+    try:
+        paginated_employees = paginator.page(page_no)
+    except PageNotAnInteger |EmptyPage:
+        paginated_employees = paginator.page(paginator.num_pages)
 
-    return render(request, 'board/manageEmpl.html', {'Employees': Employees})
+
+    return render(request, 'board/manageEmpl.html', {'Employees': paginated_employees})
+
 
 
 @login_required
@@ -263,7 +332,7 @@ def manage_centres(request):
 
     return render(request, 'board/centres.html', {'centres': centres})
 
-
+@group_required('Admin', 'CEO', 'Manager')
 @login_required
 def manage_leaves(request):
     return render(request, 'board/leaves.html')
@@ -302,9 +371,8 @@ def set_pass(request):
 
     return render(request, 'reset-password.html')
 
-
-
-
+@group_required('Admin', 'CEO', 'Manager')
+@login_required
 def update_leave_application(request, id):
     leave_application = get_object_or_404(LeaveApplication, id=id)
     if request.method == "POST":
@@ -317,3 +385,7 @@ def update_leave_application(request, id):
     else:
         messages.error(request, "Invalid request.")
         return redirect('dashboard')
+
+
+def permission_denied(request):
+    return render(request, 'permission_denied.html')
