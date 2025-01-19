@@ -5,28 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="groups and leave application filtering">
-      <change afterPath="$PROJECT_DIR$/user/management/commands/create_groups.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/templates/board/assign_group.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/templates/board/manage_groups.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/templates/permission_denied.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0002_leaveapplication.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0003_alter_leaveapplication_admin_remark_date.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0004_account_profile_picture.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0005_account_huduma_centre_account_supervisor_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0006_account_modified_date_account_total_leave_days_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0007_remove_account_modified_date_account_designation_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0008_alter_account_designation_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0008_auto_20241225_1134.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/migrations/0016_merge_0008_auto_20241225_1134_0015_account_is_staff.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/sidebar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +128,7 @@
       <workItem from="1736959674416" duration="4708000" />
       <workItem from="1737014131689" duration="6466000" />
       <workItem from="1737090642971" duration="18607000" />
-      <workItem from="1737194136988" duration="5016000" />
+      <workItem from="1737194136988" duration="5363000" />
     </task>
     <task id="LOCAL-00001" summary="MODEL">
       <option name="closed" value="true" />
@@ -200,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736949739006</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="groups and leave application filtering">
+      <option name="closed" value="true" />
+      <created>1737293834840</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1737293834840</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
