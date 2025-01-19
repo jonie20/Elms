@@ -263,6 +263,36 @@ def manage_leaves(request):
 
 
 def set_pass(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            users = Account.objects.filter(email=email)
+            for user in users:
+                uid = urlsafe_base64_encode(force_bytes(user.id))
+                token = default_token_generator.make_token(user)
+                domain = get_current_site(request).domain
+                link = f"http://{domain}/reset/{uid}/{token}/"
+
+                # Prepare the reset password email
+                email_subject = "Password Reset Request"
+                email_message = render_to_string(
+                    'reset_email.html', {'link': link}
+                )
+                from_email = settings.EMAIL_HOST_USER  # Your configured sender email
+                to_email = [user.email]
+                # send_mail(email_subject,email_message, [settings.EMAIL_HOST_USER], [user.email],fail_silently=False)
+                send_mail(
+                    email_subject,
+                    email_message,
+                    from_email,  # Sender email
+                    to_email,    # List of recipients
+                    fail_silently=False
+                )
+
+            return redirect('password_reset_done')
+    return render(request, 'reset-password.html')
+
+
     return render(request, 'reset-password.html')
 
 
