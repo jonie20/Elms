@@ -1,6 +1,6 @@
 from django.conf.urls.static import static
 from django.urls import path
-from user.views import RegisterView, LoginView, LogoutView, DashView
+from user.views import RegisterView, LoginView, LogoutView, DashView, manage_groups, assign_group
 from user import views
 from django.conf import settings
 
@@ -19,6 +19,9 @@ urlpatterns = [
     path('setpassword', views.set_pass, name="reset_pass"),
     # path('update-leave/<int:pk>/', views.update_leave_status, name='update_leave_status'),
     path('updateda/<int:id>/', views.update_leave_application, name='update_leave_application'),
+    path('permission_denied/', views.permission_denied, name='permission_denied'),
+    path('manage-groups/', manage_groups, name='manage_groups'),
+path('assign-group/', assign_group, name='assign_group'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
