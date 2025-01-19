@@ -1,8 +1,15 @@
 from datetime import datetime, timedelta
 from django.contrib import messages
 from django.http import JsonResponse
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
 from django.views import View
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
