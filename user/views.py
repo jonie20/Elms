@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 from django.contrib import messages
-<<<<<<< HEAD
+
 from django.http import JsonResponse
 from django.conf import settings
-=======
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -13,11 +13,11 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.views import View
-<<<<<<< HEAD
+
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.contrib.auth import login, logout
-=======
+from django.contrib.auth import login, logout, get_user_model
+
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
@@ -63,8 +63,7 @@ def assign_group(request):
         form = AssignGroupForm()
     return render(request, 'board/assign_group.html', {'form': form})
 
-@group_required('Admin', 'CEO', 'Manager')
-@login_required
+
 class RegisterView(View):
     def get(self, request):
         # Render the form with all available Huduma Centres
@@ -293,15 +292,15 @@ def manage_employee(request):
         employees = Account.objects.all().order_by('-id')
     elif request.user.groups.filter(name__in=['Manager', 'CEO', 'Admin']).exists():
         # Check if user is part of the 'Manager', 'CEO', or 'Admin' groups
-        if request.user.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
-            employees = Account.objects.filter(huduma_centre=request.user.huduma_centre).order_by('-id')
+        if request.employee.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
+            employees = Account.objects.filter(huduma_centre=request.employee.huduma_centre).order_by('-id')
         else:
             # If the user doesn't have a 'huduma_centre', handle it appropriately
             return redirect('no_huduma_centre')  # Replace with an appropriate page or message
     else:
         # Redirect users who are not allowed
         return redirect('permission_denied')  # You can replace this with your desired page or view
-    paginator = Paginator(employees, 10)
+    paginator = Paginator(employees, 5)
     page_no = request.GET.get('page',1)
     try:
         paginated_employees = paginator.page(page_no)
@@ -336,39 +335,49 @@ def manage_centres(request):
 def manage_leaves(request):
     return render(request, 'board/leaves.html')
 
-
-def set_pass(request):
+def reset_pass(request):
     if request.method == 'POST':
         email = request.POST.get('email')
+        #print(f"Received email: {email}")  # Debug statement
         if email:
             users = Account.objects.filter(email=email)
-            for user in users:
-                uid = urlsafe_base64_encode(force_bytes(user.id))
-                token = default_token_generator.make_token(user)
-                domain = get_current_site(request).domain
-                link = f"http://{domain}/reset/{uid}/{token}/"
+           # print(f"Users found: {users.count()}")  # Debug statement
+            if users.exists():
+                for user in users:
+                    uid = urlsafe_base64_encode(force_bytes(user.id))
+                    token = default_token_generator.make_token(user)
+                    domain = get_current_site(request).domain
+                    link = f"http://{domain}/accounts/set_pass/{uid}/{token}/"
 
-                # Prepare the reset password email
-                email_subject = "Password Reset Request"
-                email_message = render_to_string(
-                    'reset_email.html', {'link': link}
-                )
-                from_email = settings.EMAIL_HOST_USER  # Your configured sender email
-                to_email = [user.email]
-                # send_mail(email_subject,email_message, [settings.EMAIL_HOST_USER], [user.email],fail_silently=False)
-                send_mail(
-                    email_subject,
-                    email_message,
-                    from_email,  # Sender email
-                    to_email,    # List of recipients
-                    fail_silently=False
-                )
+                    # Prepare the reset password email
+                    email_subject = "Password Reset Request"
+                    email_message = render_to_string(
+                        'reset_email.html', {'link': link}
+                    )
+                    from_email = settings.EMAIL_HOST_USER  # Your configured sender email
+                    to_email = [user.email]
 
-            return redirect('password_reset_done')
+                    try:
+                        send_mail(
+                            email_subject,
+                            email_message,
+                            from_email,  # Sender email
+                            to_email,  # List of recipients
+                            fail_silently=False
+                        )
+                        messages.success(request, f"Password reset email sent to {user.email}.")
+                    except Exception as e:
+                        messages.error(request, f"Error sending email to {user.email}: {str(e)}")
+
+                return redirect('login-view')
+            else:
+                messages.error(request, "No account found with that email address.")
+        else:
+            messages.error(request, "Please enter a valid email address.")
+
     return render(request, 'reset-password.html')
 
 
-    return render(request, 'reset-password.html')
 
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
@@ -388,3 +397,29 @@ def update_leave_application(request, id):
 
 def permission_denied(request):
     return render(request, 'permission_denied.html')
+
+
+def set_pass(request, uid, token):
+    try:
+        # Decode the user ID and retrieve the user
+        user_id = urlsafe_base64_decode(uid).decode('utf-8')
+        user = get_user_model().objects.get(id=user_id)
+
+        # Check the token
+        if default_token_generator.check_token(user, token):
+            if request.method == 'POST':
+                new_password = request.POST.get('password')
+                if new_password:
+                    user.set_password(new_password)
+                    user.save()
+                    messages.success(request, "Your password has been successfully updated!")
+                    return redirect('login-view')
+                else:
+                    messages.error(request, "Please enter a valid password.")
+            return render(request, 'set-password.html', {'uid': uid, 'token': token})
+        else:
+            messages.error(request, "The password reset link is invalid or has expired.")
+            return redirect('login-view')
+    except Exception as e:
+        messages.error(request, "Invalid link or user not found.")
+        return redirect('login-view')
