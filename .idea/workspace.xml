@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="reset password implementation">
+    <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="login decorator">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -134,7 +132,7 @@
       <workItem from="1737014131689" duration="6466000" />
       <workItem from="1737090642971" duration="18607000" />
       <workItem from="1737194136988" duration="24821000" />
-      <workItem from="1737437135166" duration="1057000" />
+      <workItem from="1737437135166" duration="2577000" />
     </task>
     <task id="LOCAL-00001" summary="MODEL">
       <option name="closed" value="true" />
@@ -208,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737379567741</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="login decorator">
+      <option name="closed" value="true" />
+      <created>1737445582791</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1737445582791</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,6 +229,7 @@
     <MESSAGE value="groups and leave application filtering" />
     <MESSAGE value="groups" />
     <MESSAGE value="reset password implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="reset password implementation" />
+    <MESSAGE value="login decorator" />
+    <option name="LAST_COMMIT_MESSAGE" value="login decorator" />
   </component>
 </project>

@@ -132,7 +132,7 @@ class LoginView(View):
 
             # Redirect based on user's role or permissions
             if user.is_superuser or user.is_admin or user.is_manager or user.is_CEO:  # For admin users
-                return redirect('board')
+                return redirect('/accounts/board')
             else:  # For regular users
                 return redirect('dash')  # Ensure 'dash' is defined in urls.py
 
@@ -257,20 +257,27 @@ def board(request):
         approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
         rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
         cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
+
     elif request.user.groups.filter(name='Manager').exists():
         # Manager can only view leave applications for their huduma_centre
-        if request.user.huduma_centre:
-            applications = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre).order_by('-id')
-            pending = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Pending").order_by('-posting_date')
-            approved = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Approved").order_by('-posting_date')
-            rejected = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Rejected").order_by('-posting_date')
-            cancelled = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre, status="Cancelled").order_by('-posting_date')
+        if request.user.huduma_centre:  # Check if the Manager has a 'huduma_centre' assigned
+            applications = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre).order_by(
+                '-id')
+            pending = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,
+                                                      status="Pending").order_by('-posting_date')
+            approved = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,
+                                                       status="Approved").order_by('-posting_date')
+            rejected = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,
+                                                       status="Rejected").order_by('-posting_date')
+            cancelled = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,
+                                                        status="Cancelled").order_by('-posting_date')
         else:
-            # If the manager doesn't have a huduma_centre assigned, handle it appropriately
-            return redirect('no_huduma_centre')  # Replace with an appropriate page or message
+            # If the manager doesn't have a 'huduma_centre' assigned, handle it appropriately
+            return redirect('no_huduma_centre')  # Redirect to an appropriate page or message
+
     else:
-        # Redirect users who are not allowed
-        return redirect('permission_denied')  # You can replace this with your desired page or view
+        # Redirect users who are not allowed to view the leave applications
+        return redirect('permission_denied')  # Redirect to a permission denied page
 
     context = {
         "applications": applications,
@@ -281,7 +288,6 @@ def board(request):
     }
 
     return render(request, 'board/index.html', context)
-
 
 
 @login_required

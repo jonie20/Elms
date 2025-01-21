@@ -2,7 +2,7 @@ import os
 import uuid
 from datetime import datetime, timedelta
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 
 
 # Function to generate a unique name for profile picture uploads
@@ -11,9 +11,6 @@ def generate_unique_name(instance, filename):
     full_file_name = f'{name}-{filename}'
     return os.path.join('profile_pictures', full_file_name)
 
-
-# Custom User Manager
-from django.contrib.auth.models import BaseUserManager
 
 class AccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
@@ -53,11 +50,6 @@ class HudumaCentre(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# Custom User Model
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
-from django.db import models
 
 class Account(AbstractBaseUser, PermissionsMixin):
     DESIGNATION_CHOICES = [
