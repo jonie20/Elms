@@ -132,7 +132,7 @@ class LoginView(View):
 
             # Redirect based on user's role or permissions
             if user.is_superuser or user.is_admin or user.is_manager or user.is_CEO:  # For admin users
-                return redirect('/accounts/board')
+                return redirect('board')
             else:  # For regular users
                 return redirect('dash')  # Ensure 'dash' is defined in urls.py
 

@@ -6,7 +6,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('add-employee/', RegisterView.as_view(), name='add-employee'),
-    path('', LoginView.as_view(), name='login-view'),
+    #path('login/', LoginView.as_view(), name='login-view'),
     path('logout/', LogoutView.as_view(), name='logout-view'),
     path('apply_leave/', views.apply_leave, name='apply_leave'),
     path('dash/', DashView.as_view(), name='dash'),

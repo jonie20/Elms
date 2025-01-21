@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="groups">
-      <change afterPath="$PROJECT_DIR$/user/templates/set-password.html" afterDir="false" />
+    <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="reset password implementation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/manageEmpl.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/reset-password.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/reset-password.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
@@ -137,7 +133,8 @@
       <workItem from="1736959674416" duration="4708000" />
       <workItem from="1737014131689" duration="6466000" />
       <workItem from="1737090642971" duration="18607000" />
-      <workItem from="1737194136988" duration="23538000" />
+      <workItem from="1737194136988" duration="24821000" />
+      <workItem from="1737437135166" duration="1057000" />
     </task>
     <task id="LOCAL-00001" summary="MODEL">
       <option name="closed" value="true" />
@@ -203,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737294618516</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="reset password implementation">
+      <option name="closed" value="true" />
+      <created>1737379567741</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1737379567741</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +222,7 @@
     <MESSAGE value="modal" />
     <MESSAGE value="groups and leave application filtering" />
     <MESSAGE value="groups" />
-    <option name="LAST_COMMIT_MESSAGE" value="groups" />
+    <MESSAGE value="reset password implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="reset password implementation" />
   </component>
 </project>

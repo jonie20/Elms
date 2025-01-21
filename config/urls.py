@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 from user import views
+from user.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('user.urls')),
+    path('login/', LoginView.as_view(), name='login-view'),
 
 ]
