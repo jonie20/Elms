@@ -246,7 +246,6 @@ def leavehistory(request):
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
 
 
-
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def board(request):
@@ -298,24 +297,25 @@ def manage_employee(request):
         employees = Account.objects.all().order_by('-id')
     elif request.user.groups.filter(name__in=['Manager', 'CEO', 'Admin']).exists():
         # Check if user is part of the 'Manager', 'CEO', or 'Admin' groups
-        if request.employee.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
-            employees = Account.objects.filter(huduma_centre=request.employee.huduma_centre).order_by('-id')
+        if request.user.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
+            employees = Account.objects.filter(huduma_centre=request.user.huduma_centre).order_by('-id')
         else:
             # If the user doesn't have a 'huduma_centre', handle it appropriately
             return redirect('no_huduma_centre')  # Replace with an appropriate page or message
     else:
         # Redirect users who are not allowed
         return redirect('permission_denied')  # You can replace this with your desired page or view
-    paginator = Paginator(employees, 5)
-    page_no = request.GET.get('page',1)
+
+    # Pagination
+    paginator = Paginator(employees, 3)  # Show 5 employees per page
+    page_no = request.GET.get('page', 1)
     try:
         paginated_employees = paginator.page(page_no)
-    except PageNotAnInteger |EmptyPage:
+    except PageNotAnInteger:
+        paginated_employees = paginator.page(1)
+    except EmptyPage:
         paginated_employees = paginator.page(paginator.num_pages)
-
-
-    return render(request, 'board/manageEmpl.html', {'Employees': paginated_employees})
-
+    return render(request, 'board/manageEmpl.html', {'employees': paginated_employees})
 
 
 @login_required
@@ -336,18 +336,20 @@ def manage_centres(request):
 
     return render(request, 'board/centres.html', {'centres': centres})
 
+
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def manage_leaves(request):
     return render(request, 'board/leaves.html')
 
+
 def reset_pass(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        #print(f"Received email: {email}")  # Debug statement
+        # print(f"Received email: {email}")  # Debug statement
         if email:
             users = Account.objects.filter(email=email)
-           # print(f"Users found: {users.count()}")  # Debug statement
+            # print(f"Users found: {users.count()}")  # Debug statement
             if users.exists():
                 for user in users:
                     uid = urlsafe_base64_encode(force_bytes(user.id))
@@ -382,7 +384,6 @@ def reset_pass(request):
             messages.error(request, "Please enter a valid email address.")
 
     return render(request, 'reset-password.html')
-
 
 
 @group_required('Admin', 'CEO', 'Manager')
