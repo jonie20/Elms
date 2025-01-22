@@ -407,8 +407,13 @@ def reset_pass(request):
 @login_required
 def update_leave_application(request, id):
     leave_application = get_object_or_404(LeaveApplication, id=id)
+    user = request.user
+
     if request.method == "POST":
-        print(leave_application.id)
+        if leave_application.employee == user and not user.groups.filter(name='CEO').exists():
+            messages.error(request, "You cannot approve your own leave application.")
+            return redirect('dashboard')
+
         leave_application.status = request.POST.get('status')
         leave_application.admin_remarks = request.POST.get('admin_remarks')
         leave_application.save()
