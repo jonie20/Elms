@@ -29,7 +29,6 @@ from user.forms import GroupForm, AssignGroupForm
 from user.models import Account, LeaveApplication, HudumaCentre
 
 
-
 def group_required(*group_names):
     def decorator(view_func):
         @login_required
@@ -250,18 +249,28 @@ def leavehistory(request):
                   {'leave_applications': leave_applications, 'status_filter': status_filter})
 
 
-
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def board(request):
-    if request.user.is_superuser or request.user.groups.filter(name__in=['CEO', 'Admin']).exists():
-        # Superuser, CEO, and Admin can view all leave applications
+    if request.user.is_superuser or request.user.groups.filter(name__in=['Admin']).exists():
+        # Superuser and Admin can view all leave applications
         applications = LeaveApplication.objects.all().order_by('-id')
         pending = LeaveApplication.objects.filter(status="Pending").order_by('-posting_date')
         approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
         rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
         cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
-
+    elif request.user.is_CEO or request.user.groups.filter(name='CEO').exists():
+        # CEO can only view leave applications submitted by managers
+        manager_ids = Account.objects.filter(is_manager=True).values_list('id', flat=True)
+        applications = LeaveApplication.objects.filter(employee__id__in=manager_ids).order_by('-id')
+        pending = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Pending").order_by(
+            '-posting_date')
+        approved = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Approved").order_by(
+            '-posting_date')
+        rejected = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Rejected").order_by(
+            '-posting_date')
+        cancelled = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Cancelled").order_by(
+            '-posting_date')
     elif request.user.groups.filter(name='Manager').exists():
         # Manager can only view leave applications for their huduma_centre
         if request.user.huduma_centre:  # Check if the Manager has a 'huduma_centre' assigned
@@ -278,7 +287,6 @@ def board(request):
         else:
             # If the manager doesn't have a 'huduma_centre' assigned, handle it appropriately
             return redirect('no_huduma_centre')  # Redirect to an appropriate page or message
-
     else:
         # Redirect users who are not allowed to view the leave applications
         return redirect('permission_denied')  # Redirect to a permission denied page
@@ -302,24 +310,25 @@ def manage_employee(request):
         employees = Account.objects.all().order_by('-id')
     elif request.user.groups.filter(name__in=['Manager', 'CEO', 'Admin']).exists():
         # Check if user is part of the 'Manager', 'CEO', or 'Admin' groups
-        if request.employee.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
-            employees = Account.objects.filter(huduma_centre=request.employee.huduma_centre).order_by('-id')
+        if request.user.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
+            employees = Account.objects.filter(huduma_centre=request.user.huduma_centre).order_by('-id')
         else:
             # If the user doesn't have a 'huduma_centre', handle it appropriately
             return redirect('no_huduma_centre')  # Replace with an appropriate page or message
     else:
         # Redirect users who are not allowed
         return redirect('permission_denied')  # You can replace this with your desired page or view
-    paginator = Paginator(employees, 5)
-    page_no = request.GET.get('page',1)
+
+    # Pagination
+    paginator = Paginator(employees, 3)  # Show 5 employees per page
+    page_no = request.GET.get('page', 1)
     try:
         paginated_employees = paginator.page(page_no)
-    except PageNotAnInteger |EmptyPage:
+    except PageNotAnInteger:
+        paginated_employees = paginator.page(1)
+    except EmptyPage:
         paginated_employees = paginator.page(paginator.num_pages)
-
-
-    return render(request, 'board/manageEmpl.html', {'Employees': paginated_employees})
-
+    return render(request, 'board/manageEmpl.html', {'employees': paginated_employees})
 
 
 @login_required
@@ -340,18 +349,20 @@ def manage_centres(request):
 
     return render(request, 'board/centres.html', {'centres': centres})
 
+
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def manage_leaves(request):
     return render(request, 'board/leaves.html')
 
+
 def reset_pass(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        #print(f"Received email: {email}")  # Debug statement
+        # print(f"Received email: {email}")  # Debug statement
         if email:
             users = Account.objects.filter(email=email)
-           # print(f"Users found: {users.count()}")  # Debug statement
+            # print(f"Users found: {users.count()}")  # Debug statement
             if users.exists():
                 for user in users:
                     uid = urlsafe_base64_encode(force_bytes(user.id))
@@ -392,13 +403,17 @@ def reset_pass(request):
     return render(request, 'reset-password.html')
 
 
-
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def update_leave_application(request, id):
     leave_application = get_object_or_404(LeaveApplication, id=id)
+    user = request.user
+
     if request.method == "POST":
-        print(leave_application.id)
+        if leave_application.employee == user and not user.groups.filter(name='CEO').exists():
+            messages.error(request, "You cannot approve your own leave application.")
+            return redirect('dashboard')
+
         leave_application.status = request.POST.get('status')
         leave_application.admin_remarks = request.POST.get('admin_remarks')
         leave_application.save()
@@ -423,13 +438,33 @@ def set_pass(request, uid, token):
         if default_token_generator.check_token(user, token):
             if request.method == 'POST':
                 new_password = request.POST.get('password')
-                if new_password:
+                confirm_password = request.POST.get('confirm_password')
+                if new_password and new_password == confirm_password:
                     user.set_password(new_password)
                     user.save()
+
+                    # Send email notification
+                    email_subject = "Password Changed Successfully"
+                    html_content = render_to_string('confirm_pass.html', {'user': user})
+                    from_email = settings.EMAIL_HOST_USER
+                    to_email = [user.email]
+
+                    try:
+                        email = EmailMessage(
+                            subject=email_subject,
+                            body=html_content,
+                            from_email=from_email,
+                            to=to_email,
+                        )
+                        email.content_subtype = "html"
+                        email.send(fail_silently=False)
+                    except Exception as e:
+                        messages.error(request, f"Error sending email: {str(e)}")
+
                     messages.success(request, "Your password has been successfully updated!")
                     return redirect('login-view')
                 else:
-                    messages.error(request, "Please enter a valid password.")
+                    messages.error(request, "Passwords do not match or are invalid.")
             return render(request, 'set-password.html', {'uid': uid, 'token': token})
         else:
             messages.error(request, "The password reset link is invalid or has expired.")
@@ -437,3 +472,5 @@ def set_pass(request, uid, token):
     except Exception as e:
         messages.error(request, "Invalid link or user not found.")
         return redirect('login-view')
+
+
