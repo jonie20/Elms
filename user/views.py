@@ -4,6 +4,9 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.conf import settings
 
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -24,6 +27,7 @@ from user.authentication import AccountAuthentication
 from user.forms import GroupForm, AssignGroupForm
 
 from user.models import Account, LeaveApplication, HudumaCentre
+
 
 
 def group_required(*group_names):
@@ -359,20 +363,24 @@ def reset_pass(request):
 
                     # Prepare the reset password email
                     email_subject = "Password Reset Request"
-                    email_message = render_to_string(
-                        'reset_email.html', {'link': link}
-                    )
+                    html_content = render_to_string('reset_email.html', {'link': link})  # Render the HTML template
                     from_email = settings.EMAIL_HOST_USER  # Your configured sender email
                     to_email = [user.email]
 
                     try:
-                        send_mail(
-                            email_subject,
-                            email_message,
-                            from_email,  # Sender email
-                            to_email,  # List of recipients
-                            fail_silently=False
+                        # Create the email object
+                        email = EmailMessage(
+                            subject=email_subject,
+                            body=html_content,
+                            from_email=from_email,
+                            to=to_email,
                         )
+
+                        # Specify the content type as HTML
+                        email.content_subtype = "html"
+
+                        # Send the email
+                        email.send(fail_silently=False)
                         messages.success(request, f"Password reset email sent to {user.email}.")
                     except Exception as e:
                         messages.error(request, f"Error sending email to {user.email}: {str(e)}")
