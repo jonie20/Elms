@@ -26,6 +26,7 @@ from user.forms import GroupForm, AssignGroupForm
 from user.models import Account, LeaveApplication, HudumaCentre
 
 
+
 def group_required(*group_names):
     def decorator(view_func):
         @login_required
