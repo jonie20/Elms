@@ -29,7 +29,6 @@ from user.forms import GroupForm, AssignGroupForm
 from user.models import Account, LeaveApplication, HudumaCentre
 
 
-
 def group_required(*group_names):
     def decorator(view_func):
         @login_required
@@ -253,14 +252,25 @@ def leavehistory(request):
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def board(request):
-    if request.user.is_superuser or request.user.groups.filter(name__in=['CEO', 'Admin']).exists():
-        # Superuser, CEO, and Admin can view all leave applications
+    if request.user.is_superuser or request.user.groups.filter(name__in=['Admin']).exists():
+        # Superuser and Admin can view all leave applications
         applications = LeaveApplication.objects.all().order_by('-id')
         pending = LeaveApplication.objects.filter(status="Pending").order_by('-posting_date')
         approved = LeaveApplication.objects.filter(status="Approved").order_by('-posting_date')
         rejected = LeaveApplication.objects.filter(status="Rejected").order_by('-posting_date')
         cancelled = LeaveApplication.objects.filter(status="Cancelled").order_by('-posting_date')
-
+    elif request.user.is_CEO or request.user.groups.filter(name='CEO').exists():
+        # CEO can only view leave applications submitted by managers
+        manager_ids = Account.objects.filter(is_manager=True).values_list('id', flat=True)
+        applications = LeaveApplication.objects.filter(employee__id__in=manager_ids).order_by('-id')
+        pending = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Pending").order_by(
+            '-posting_date')
+        approved = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Approved").order_by(
+            '-posting_date')
+        rejected = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Rejected").order_by(
+            '-posting_date')
+        cancelled = LeaveApplication.objects.filter(employee__id__in=manager_ids, status="Cancelled").order_by(
+            '-posting_date')
     elif request.user.groups.filter(name='Manager').exists():
         # Manager can only view leave applications for their huduma_centre
         if request.user.huduma_centre:  # Check if the Manager has a 'huduma_centre' assigned
@@ -277,7 +287,6 @@ def board(request):
         else:
             # If the manager doesn't have a 'huduma_centre' assigned, handle it appropriately
             return redirect('no_huduma_centre')  # Redirect to an appropriate page or message
-
     else:
         # Redirect users who are not allowed to view the leave applications
         return redirect('permission_denied')  # Redirect to a permission denied page
