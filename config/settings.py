@@ -135,7 +135,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 MEDIA_URL = '/media/'
 
 
-LOGIN_URL = '/login/'  # This specifies where users will be redirected if they are not logged in
+LOGIN_URL = ''  # This specifies where users will be redirected if they are not logged in
  # Redirect after successful login
 
 # Default primary key field type
