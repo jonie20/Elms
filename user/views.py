@@ -175,13 +175,14 @@ class DashView(View):
 
 @login_required
 def apply_leave(request):
+    user = request.user
     if request.method == 'POST':
         leave_type = request.POST.get('leave_type')
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
         description = request.POST.get('description')
 
-        if LeaveApplication.objects.filter(employee=request.user, status='Pending').exists():
+        if LeaveApplication.objects.filter(employee=user, status='Pending').exists():
             messages.error(request, "You cannot apply for leave while a previous application is pending.")
             return redirect('apply_leave')
 
@@ -213,20 +214,20 @@ def apply_leave(request):
             from_date=from_date_obj,
             to_date=to_date_obj,
             description=description,
-            employee=request.user,
+            employee=user,
         )
 
         # Calculate the number of working days (excluding weekends and holidays)
         leave_application.no_of_days = leave_application.calculate_working_days()
 
         # Check if the user has enough leave days for the specific leave type
-        if leave_type == 'SL' and leave_application.no_of_days > request.user.sick_leave_days:
+        if leave_type == 'SL' and leave_application.no_of_days > user.sick_leave_days:
             messages.error(request, "You do not have enough sick leave days available.")
             return redirect('apply_leave')
-        elif leave_type == 'CL' and leave_application.no_of_days > request.user.casual_leave_days:
+        elif leave_type == 'CL' and leave_application.no_of_days > user.casual_leave_days:
             messages.error(request, "You do not have enough casual leave days available.")
             return redirect('apply_leave')
-        elif leave_type == 'EL' and leave_application.no_of_days > request.user.emergency_leave_days:
+        elif leave_type == 'EL' and leave_application.no_of_days > user.emergency_leave_days:
             messages.error(request, "You do not have enough emergency leave days available.")
             return redirect('apply_leave')
 
@@ -235,7 +236,13 @@ def apply_leave(request):
         messages.success(request, "Leave application submitted successfully.")
         return redirect('dash')  # Redirect to user's dashboard or any relevant page
 
-    return render(request, 'apply_leave.html')
+    context = {
+        'total_leave_days': user.total_leave_days,
+        'sick_leave_days': user.sick_leave_days,
+        'casual_leave_days': user.casual_leave_days,
+        'emergency_leave_days': user.emergency_leave_days,
+    }
+    return render(request, 'apply_leave.html', context)
 
 
 @login_required
@@ -404,6 +411,7 @@ def reset_pass(request):
             messages.error(request, "Please enter a valid email address.")
 
     return render(request, 'reset-password.html')
+
 
 
 

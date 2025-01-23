@@ -90,6 +90,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     sick_leave_days = models.IntegerField(default=15)
     casual_leave_days = models.IntegerField(default=10)
     emergency_leave_days = models.IntegerField(default=5)
+    carry_forward_days = models.IntegerField(default=0)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
@@ -98,7 +99,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     @property
     def total_leave_days(self):
-        return self.sick_leave_days + self.casual_leave_days + self.emergency_leave_days
+        return self.sick_leave_days + self.casual_leave_days + self.emergency_leave_days + self.carry_forward_days
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.username})'
@@ -145,8 +146,6 @@ class LeaveApplication(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
     employee = models.ForeignKey(Account, on_delete=models.CASCADE)
     no_of_days = models.IntegerField(verbose_name="Number of Days", default=15)
-    carry_forward_days = models.IntegerField(verbose_name="Carry Forward Days", default=0)
-    total_leave_days = models.IntegerField(verbose_name="Total Leave Days", default=0)
 
     def clean(self):
         super().clean()
@@ -168,12 +167,11 @@ class LeaveApplication(models.Model):
 
         return total_days
 
-
     def save(self, *args, **kwargs):
         self.no_of_days = self.calculate_working_days()
         super().save(*args, **kwargs)
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.employee.username} - {self.get_leave_type_display()} ({self.status})"
 
 

@@ -2,28 +2,55 @@
 {% load static %}
 {% block content %}
 
-    class="app">
+<div class="app">
     <header class="app-header fixed-top">
-        {#    nav bar#}
         {% include 'navbar.html' %}
-        {#    end of nav bar#}
-
-        <!--//app-header-inner-->
         {% include 'sidebar.html' %}
 
         <div class="app-wrapper">
-
             <div class="app-content pt-3 p-md-3 p-lg-4 mt-4">
                 <div class="container-xl">
-
                     <h1 class="app-page-title">Apply Leave</h1>
                     <div class="row g-4 mb-4">
-                        <div class="col-12 ">
+                        <div class="col-12">
                             <div class="app-card app-card-settings shadow-sm p-4">
+                                {% include 'alerts.html' %}
 
-{#                                <div class="app-card-body"><#}
-								{% include 'alerts.html' %}
-
+                                <!-- Display leave days information -->
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Total Leave Days</h6>
+                                                <p class="card-text">{{ total_leave_days }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Sick Leave Days</h6>
+                                                <p class="card-text">{{ sick_leave_days }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Casual Leave Days</h6>
+                                                <p class="card-text">{{ casual_leave_days }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Emergency Leave Days</h6>
+                                                <p class="card-text">{{ emergency_leave_days }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <form class="settings-form row" method="POST">
                                     {% csrf_token %}
@@ -39,12 +66,12 @@
                                                     width="1em" height="1em" viewBox="0 0 16 16"
                                                     class="bi bi-info-circle" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
-	  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-	  <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
-	  <circle cx="8" cy="4.5" r="1"/>
-	</svg></span></label>
+      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+      <circle cx="8" cy="4.5" r="1"/>
+    </svg></span></label>
                                             <input type="date" class="form-control" name="from_date"
-											id="myDate" onfocus="disablePastDates()" onchange="setMinDate()" value="Lorem Ipsum Ltd." required>
+                                            id="myDate" onfocus="disablePastDates()" onchange="setMinDate()" value="Lorem Ipsum Ltd." required>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -58,10 +85,10 @@
                                                     width="1em" height="1em" viewBox="0 0 16 16"
                                                     class="bi bi-info-circle" fill="currentColor"
                                                     xmlns="http://www.w3.org/2000/svg">
-	  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-	  <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
-	  <circle cx="8" cy="4.5" r="1"/>
-	</svg></span></label>
+      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+      <circle cx="8" cy="4.5" r="1"/>
+    </svg></span></label>
                                             <input type="date" class="form-control" name="to_date" id="endDate" onchange="calculatedays()"
                                                    value="Lorem Ipsum Ltd." required>
                                         </div>
@@ -84,11 +111,7 @@
                                     </div>
                                     <button type="submit" class="btn app-btn-primary">APPLY</button>
                                 </form>
-								{% if remaining_days is not None %}
-        <h2>Remaining Days: {{ remaining_days }}</h2>
-    {% endif %}
                             </div><!--//app-card-body-->
-
                         </div><!--//app-card-->
                     </div>
                 </div>
@@ -100,82 +123,73 @@
 
         <footer class="app-footer">
             <div class="container text-center py-3">
-                <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
                 <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
                                                                                            style="color: #fb866a;"></i>
                     by <a class="app-link" href="http://themes.3rdwavemedia.com"
                           target="_blank">Nandi Dev</a> Huduma </small>
-
             </div>
         </footer>
         <!--//app-footer-->
+    </header>
+</div>
 
-        </div>
-        <!--//app-wrapper-->
-    </header>>
-    <script> // Check if there is a success message, then delay redirect
-  {% if messages %}
-    {% for message in messages %}
-      {% if "success" in message.tags %}
-        setTimeout(function() {
-          window.location.href = "{% url 'dash' %}";
-        }, 3000); // Delay for 5000 ms (5 seconds)
-      {% endif %}
-    {% endfor %}
-  {% endif %}
+<script>
+    // Check if there is a success message, then delay redirect
+    {% if messages %}
+        {% for message in messages %}
+            {% if "success" in message.tags %}
+                setTimeout(function() {
+                    window.location.href = "{% url 'dash' %}";
+                }, 3000); // Delay for 5000 ms (5 seconds)
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
-  
-        function disablePastDates(){
+    function disablePastDates() {
+        var today = new Date();
+        today.setDate(today.getDate() + 7);
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
 
-            var today = new Date();
-            today.setDate(today.getDate() + 7);
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("myDate").setAttribute("min", today);
+    }
 
-            today = yyyy + '-' + mm +'-'+ dd;
-            document.getElementById("myDate").setAttribute("min", today);
-        } 
+    function setMinDate() {
+        // Get the selected date from the "Start Date" input
+        var selectedDate = document.getElementById("myDate").value;
 
+        if (selectedDate) {
+            // Convert the selected date to a Date object
+            var startDate = new Date(selectedDate);
 
-		function setMinDate() {
-			// Get the selected date from the "Start Date" input
-			var selectedDate = document.getElementById("myDate").value;
-		
-			if (selectedDate) {
-				// Convert the selected date to a Date object
-				var startDate = new Date(selectedDate);
-		
-				// Add 1 day to the selected date
-				startDate.setDate(startDate.getDate() + 1);
-		
-				// Format the date back to YYYY-MM-DD
-				var dd = String(startDate.getDate()).padStart(2, '0');
-				var mm = String(startDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-				var yyyy = startDate.getFullYear();
-				var nextDay = yyyy + '-' + mm + '-' + dd;
-		
-				// Set the minimum date of the "End Date" input to the next day
-				document.getElementById("endDate").setAttribute("min", nextDay);
-			}
-		}
+            // Add 1 day to the selected date
+            startDate.setDate(startDate.getDate() + 1);
 
-        function calculatedays(){
-             var fromdate = new Date (document.getElementById("myDate").value);
-             var todate = new Date(document.getElementById("endDate").value);
+            // Format the date back to YYYY-MM-DD
+            var dd = String(startDate.getDate()).padStart(2, '0');
+            var mm = String(startDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+            var yyyy = startDate.getFullYear();
+            var nextDay = yyyy + '-' + mm + '-' + dd;
 
-             if (fromdate && todate){
-                 var difference = todate - fromdate;
-                 var days = Math.ceil(difference/(1000 * 60 * 60 * 24));
-                 document.getElementById("result").innerHTML = days + ' days applied';
+            // Set the minimum date of the "End Date" input to the next day
+            document.getElementById("endDate").setAttribute("min", nextDay);
+        }
+    }
 
-             }else{
-                 document.getElementById("result").innerHTML = "";
-             }
-        }		
-  
- 
- 
-  </script>
+    function calculatedays() {
+        var fromdate = new Date(document.getElementById("myDate").value);
+        var todate = new Date(document.getElementById("endDate").value);
+
+        if (fromdate && todate) {
+            var difference = todate - fromdate;
+            var days = Math.ceil(difference / (1000 * 60 * 60 * 24));
+            document.getElementById("result").innerHTML = days + ' days applied';
+        } else {
+            document.getElementById("result").innerHTML = "";
+        }
+    }
+</script>
 {% endblock %}
-{% block title %} home {% endblock %}
+{% block title %} Apply Leave {% endblock %}
