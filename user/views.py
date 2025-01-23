@@ -1,31 +1,24 @@
 from datetime import datetime, timedelta
-from django.contrib import messages
 
-from django.http import JsonResponse
 from django.conf import settings
-
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-
-from django.core.exceptions import PermissionDenied
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
-from django.contrib.auth import login, logout, get_user_model
-
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
 from user.authentication import AccountAuthentication
 from user.forms import GroupForm, AssignGroupForm
-
 from user.models import Account, LeaveApplication, HudumaCentre
 
 
@@ -46,12 +39,14 @@ def manage_groups(request):
     if request.method == 'POST':
         form = GroupForm(request.POST)
         if form.is_valid():
-            group = form.save()
-            return redirect('manage_groups')
+            form.save()  # Simply save the form
+            return redirect('manage_groups')  # Redirect after saving
     else:
         form = GroupForm()
+
     groups = Group.objects.all()
     return render(request, 'board/manage_groups.html', {'form': form, 'groups': groups})
+
 
 
 def assign_group(request):
@@ -66,10 +61,10 @@ def assign_group(request):
         form = AssignGroupForm()
     return render(request, 'board/assign_group.html', {'form': form})
 
-
+# noinspection PyMethodMayBeStatic
 class RegisterView(View):
     def get(self, request):
-        # Render the form with all available Huduma Centres
+
         return render(request, 'board/employee.html', {
             'huduma_centre': HudumaCentre.objects.all()  # Provide all Huduma Centres to the template
         })
@@ -120,7 +115,7 @@ class RegisterView(View):
         messages.success(request, "Registration successful! You can now log in.")
         return redirect('dashboard')  # Redirect to the dashboard after successful registration
 
-
+# noinspection PyMethodMayBeStatic
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
@@ -143,12 +138,13 @@ class LoginView(View):
             messages.error(request, "Invalid email or password. Please try again.")
             return redirect('login-view')  # Ensure 'login-view' is defined in urls.py
 
-
+# noinspection PyMethodMayBeStatic
 class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('login-view')
 
+# noinspection PyMethodMayBeStatic
 
 class DashView(View):
     def get(self, request):
@@ -413,8 +409,8 @@ def reset_pass(request):
 
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
-def update_leave_application(request, id):
-    leave_application = get_object_or_404(LeaveApplication, id=id)
+def update_leave_application(request, leave_id):
+    leave_application = get_object_or_404(LeaveApplication, id=leave_id)
     user = request.user
 
     if request.method == "POST":
@@ -459,8 +455,12 @@ def update_leave_application(request, id):
         return redirect('dashboard')
 
 
+
 def permission_denied(request):
     return render(request, 'permission_denied.html')
+
+
+
 
 
 def set_pass(request, uid, token):
@@ -494,6 +494,7 @@ def set_pass(request, uid, token):
                         email.content_subtype = "html"
                         email.send(fail_silently=False)
                     except Exception as e:
+                        # Log or display the exception message
                         messages.error(request, f"Error sending email: {str(e)}")
 
                     messages.success(request, "Your password has been successfully updated!")
@@ -504,8 +505,18 @@ def set_pass(request, uid, token):
         else:
             messages.error(request, "The password reset link is invalid or has expired.")
             return redirect('login-view')
-    except Exception as e:
-        messages.error(request, "Invalid link or user not found.")
+    except ObjectDoesNotExist :
+        # Specific exception for user not found
+        messages.error(request, "User not found.")
         return redirect('login-view')
+    except ValueError:
+        # If URL decoding fails
+        messages.error(request, "Invalid reset link.")
+        return redirect('login-view')
+    except Exception as e:
+        # Log the general exception for unexpected errors
+        messages.error(request, f"An unexpected error occurred: {str(e)}")
+        return redirect('login-view')
+
 
 
