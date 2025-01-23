@@ -87,12 +87,18 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_CEO = models.BooleanField(default=False)
     is_manager = models.BooleanField(default=False)
-    total_leave_days = models.IntegerField(default=0)
+    sick_leave_days = models.IntegerField(default=15)
+    casual_leave_days = models.IntegerField(default=10)
+    emergency_leave_days = models.IntegerField(default=5)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
     objects = AccountManager()
+
+    @property
+    def total_leave_days(self):
+        return self.sick_leave_days + self.casual_leave_days + self.emergency_leave_days
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.username})'

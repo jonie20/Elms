@@ -223,8 +223,15 @@ def apply_leave(request):
         # Calculate the number of working days (excluding weekends and holidays)
         leave_application.no_of_days = leave_application.calculate_working_days()
 
-        if leave_application.no_of_days > request.user.total_leave_days:
-            messages.error(request, "You do not have enough leave days available.")
+        # Check if the user has enough leave days for the specific leave type
+        if leave_type == 'SL' and leave_application.no_of_days > request.user.sick_leave_days:
+            messages.error(request, "You do not have enough sick leave days available.")
+            return redirect('apply_leave')
+        elif leave_type == 'CL' and leave_application.no_of_days > request.user.casual_leave_days:
+            messages.error(request, "You do not have enough casual leave days available.")
+            return redirect('apply_leave')
+        elif leave_type == 'EL' and leave_application.no_of_days > request.user.emergency_leave_days:
+            messages.error(request, "You do not have enough emergency leave days available.")
             return redirect('apply_leave')
 
         leave_application.save()
@@ -403,6 +410,7 @@ def reset_pass(request):
     return render(request, 'reset-password.html')
 
 
+
 @group_required('Admin', 'CEO', 'Manager')
 @login_required
 def update_leave_application(request, id):
@@ -414,7 +422,34 @@ def update_leave_application(request, id):
             messages.error(request, "You cannot approve your own leave application.")
             return redirect('dashboard')
 
-        leave_application.status = request.POST.get('status')
+        new_status = request.POST.get('status')
+        if new_status == 'Approved' and leave_application.status != 'Approved':
+            leave_days = leave_application.no_of_days
+            employee = leave_application.employee
+
+            # Deduct the leave days from the user's leave allocation
+            if leave_application.leave_type == 'SL':
+                if employee.sick_leave_days >= leave_days:
+                    employee.sick_leave_days -= leave_days
+                else:
+                    messages.error(request, "Insufficient sick leave days.")
+                    return redirect('dashboard')
+            elif leave_application.leave_type == 'CL':
+                if employee.casual_leave_days >= leave_days:
+                    employee.casual_leave_days -= leave_days
+                else:
+                    messages.error(request, "Insufficient casual leave days.")
+                    return redirect('dashboard')
+            elif leave_application.leave_type == 'EL':
+                if employee.emergency_leave_days >= leave_days:
+                    employee.emergency_leave_days -= leave_days
+                else:
+                    messages.error(request, "Insufficient emergency leave days.")
+                    return redirect('dashboard')
+
+            employee.save()
+
+        leave_application.status = new_status
         leave_application.admin_remarks = request.POST.get('admin_remarks')
         leave_application.save()
         messages.success(request, "Leave application updated successfully!")
