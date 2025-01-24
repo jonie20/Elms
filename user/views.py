@@ -286,6 +286,10 @@ def board(request):
         if request.user.huduma_centre:  # Check if the Manager has a 'huduma_centre' assigned
             applications = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre).order_by(
                 '-id')
+            # managerapplications = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,
+                                                        # employee__is_manager=True).order_by('-posting_date')
+            manager_group = Group.objects.get(name="Manager")
+            managerapplications = LeaveApplication.objects.filter(employee__groups=manager_group)                                            
             pending = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,
                                                       status="Pending").order_by('-posting_date')
             approved = LeaveApplication.objects.filter(employee__huduma_centre=request.user.huduma_centre,

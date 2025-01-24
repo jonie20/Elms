@@ -189,19 +189,19 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% if pending %}
-                                                {% for p in pending %}
+                                            {% if applications %}
+                                                {% for application in applications %}
                                                     <tr>
                                                         <td class="cell">{{ forloop.counter }}</td>
-                                                        <td class="cell"><span class="truncate">{{ p.employee }}</span>
+                                                        <td class="cell"><span class="truncate">{{ application.employee }}</span>
                                                         </td>
-                                                        <td class="cell">{{ p.employee.huduma_centre }}</td>
+                                                        <td class="cell">{{ application.employee.huduma_centre }}</td>
                                                         <td class="cell"><span
-                                                                class="cell-data">{{ p.posting_date }}</span>
+                                                                class="cell-data">{{ application.posting_date }}</span>
                                                         </td>
                                                         <td class="cell"><span
-                                                                class="badge bg-warning">{{ p.status }}</span></td>
-                                                        <td class="cell">{{ p.no_of_days }}</td>
+                                                                class="badge bg-warning">{{ application.status }}</span></td>
+                                                        <td class="cell">{{ application.no_of_days }}</td>
                                                         <td class="cell">
                                                             <a class="btn-sm app-btn-secondary" data-id="{{ p.id }}"
                                                                data-admin-remarks="{{ p.admin_remarks|default:'N/a' }}"
@@ -547,12 +547,12 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% if applications %}
-                                                    {% for a in applications %}
+                                                {% if managerapplications %}
+                                                    {% for ma in managerapplications %}
                                                         <tr>
-                                                            <td class="cell">{{ a.leave_type }}</td>
+                                                            <td class="cell">{{ ma.leave_type }}</td>
                                                             </td>
-                                                            <td class="cell"><span>{{ a.posting_date }}</span></td>
+                                                            <td class="cell"><span>{{ ma.posting_date }}</span></td>
                                                             <td class="cell">
                                                                 <span class="badge 
                                                                 {% if a.status == 'Approved' %}
