@@ -537,19 +537,20 @@
                                             <table class="table app-table-hover mb-0 text-left">
                                                 <thead>
                                                 <tr>
-                                                    <th class="cell">s/no</th>
+                                                    <th class="cell">Type</th>
                                                     <th class="cell">Apply/Date</th>
                                                     <th class="cell">Status</th>
                                                     <th class="cell">Days applied</th>
     
-                                                    <th class="cell">Action</th>
+                                                    <th class="cell">Remarks</th>
+                                                    <th class="cell">Remarks/Date</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 {% if applications %}
                                                     {% for a in applications %}
                                                         <tr>
-                                                            <td class="cell">{{ forloop.counter }}</td>
+                                                            <td class="cell">{{ a.leave_type }}</td>
                                                             </td>
                                                             <td class="cell"><span>{{ a.posting_date }}</span></td>
                                                             <td class="cell">
@@ -570,9 +571,11 @@
                                                                 </span>
                                                             </td>
                                                             <td class="cell">{{ a.no_of_days }}</td>
+                                                            <td class="cell">{{ a.admin_remarks }}</td>
+                                                            <td class="cell">{{ a.admin_remarks_date }}</td>
     
     
-                                                            <td class="cell">
+                                                            <!-- <td class="cell">
                                                                 <a class="btn-sm app-btn-secondary" data-id="{{ a.id }}"
                                                                    data-admin-remarks="{{ a.admin_remarks|default:'N/a'}}"
                                                                    data-from-date="{{ a.from_date }}"
@@ -584,7 +587,7 @@
                                                                    data-employee="{{ a.employee }}"
                                                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                                                                    href="#">View</a>
-                                                            </td>
+                                                            </td> -->
                                                         </tr>
                                                     {% endfor %}
                                                 {% else %}
@@ -602,7 +605,7 @@
                                     <!--//app-card-body-->
                                 </div>
                                 <!--//app-card-->
-                                <nav class="app-pagination">
+                                <!-- <nav class="app-pagination">
                                     <ul class="pagination justify-content-center">
                                         <li class="page-item disabled">
                                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
@@ -614,7 +617,7 @@
                                             <a class="page-link" href="#">Next</a>
                                         </li>
                                     </ul>
-                                </nav>
+                                </nav> -->
                                 <!--//app-pagination-->
     
                             </div>                            
