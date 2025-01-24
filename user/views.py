@@ -146,31 +146,35 @@ class LogoutView(View):
 
 # noinspection PyMethodMayBeStatic
 
+
 class DashView(View):
     def get(self, request):
         # Retrieve all leave applications for the user
         leave_applications = LeaveApplication.objects.filter(employee=request.user).order_by('-posting_date')
 
         # Calculate dynamic values
-        carry_forward_days = leave_applications.filter(
-            status="Approved", to_date__lt=datetime.now().date()
-        ).count()  # Replace with actual carry-forward logic
 
-        leave_allocated = 15  # Example value; replace with actual allocation logic
-        total_leave_days = carry_forward_days + leave_allocated
+        carry_forward_days = request.user.carry_forward_days
+        sick_leave_days = request.user.sick_leave_days
+        casual_leave_days = request.user.casual_leave_days
+        emergency_leave_days = request.user.emergency_leave_days
+        total_leave_days = carry_forward_days + sick_leave_days + casual_leave_days + emergency_leave_days
 
         # Pass data to template
         context = {
             'leave_applications': leave_applications,
+            'financial_year': '2024/2025',  # Hardcoded
             'status_filter': request.GET.get('status', 'all'),
             'dashboard_data': {
-                'financial_year': '2024/2025',  # Hardcoded
                 'carry_forward': carry_forward_days,
-                'leave_allocated': leave_allocated,
+                'sick_leave_days': sick_leave_days,
+                'casual_leave_days': casual_leave_days,
+                'emergency_leave_days': emergency_leave_days,
                 'total_leave_days': total_leave_days,
             }
         }
         return render(request, 'index.html', context)
+
 
 
 @login_required
