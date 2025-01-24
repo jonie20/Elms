@@ -139,6 +139,9 @@
                                             </svg>
                                             Download CSV
                                         </a>
+                                        <a class="btn app-btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#staticLeaves">
+                                            MY APPLIED LEAVES
+                                        </a>
                                     </div>
                                 </div>
                                 <!--//row-->
@@ -506,6 +509,115 @@
                                 <textarea class="form-control" name="admin_remarks" id="adminRemarks" rows="3"
                                           required></textarea>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Apply Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="staticLeaves" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateLeaveModalLabel">LEAVE HISTORY</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="tab-pane   " id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+                                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                                    <div class="app-card-body">
+                                        <div class="table-responsive">
+                                            <table class="table app-table-hover mb-0 text-left">
+                                                <thead>
+                                                <tr>
+                                                    <th class="cell">s/no</th>
+                                                    <th class="cell">Apply/Date</th>
+                                                    <th class="cell">Status</th>
+                                                    <th class="cell">Days applied</th>
+    
+                                                    <th class="cell">Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if applications %}
+                                                    {% for a in applications %}
+                                                        <tr>
+                                                            <td class="cell">{{ forloop.counter }}</td>
+                                                            </td>
+                                                            <td class="cell"><span>{{ a.posting_date }}</span></td>
+                                                            <td class="cell">
+                                                                <span class="badge 
+                                                                {% if a.status == 'Approved' %}
+                                                                bg-success
+                                                                {% elif a.status == 'Rejected' %}
+                                                                bg-danger
+                                                                {% elif a.status == 'Pending' %}
+                                                                bg-warning
+                                                                {% elif a.status == 'Cancelled' %}
+                                                                bg-secondary
+                                                                {% else %}
+                                                                bg-light
+                                                                {% endif %}
+                                                                ">
+                                                                {{ a.status }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="cell">{{ a.no_of_days }}</td>
+    
+    
+                                                            <td class="cell">
+                                                                <a class="btn-sm app-btn-secondary" data-id="{{ a.id }}"
+                                                                   data-admin-remarks="{{ a.admin_remarks|default:'N/a'}}"
+                                                                   data-from-date="{{ a.from_date }}"
+    
+                                                                   data-to-date="{{ a.to_date }}"
+                                                                   data-date-applied="{{ a.posting_date }}"
+                                                                   data-status="{{ a.status }}"
+    
+                                                                   data-employee="{{ a.employee }}"
+                                                                   data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                                                   href="#">View</a>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td colspan="8">No leave applications found.</td>
+                                                    </tr>
+                                                {% endif %}
+    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!--//table-responsive-->
+    
+                                    </div>
+                                    <!--//app-card-body-->
+                                </div>
+                                <!--//app-card-->
+                                <nav class="app-pagination">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <!--//app-pagination-->
+    
+                            </div>                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
