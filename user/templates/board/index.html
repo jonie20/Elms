@@ -189,19 +189,19 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% if applications %}
-                                                {% for application in applications %}
+                                            {% if pending %}
+                                                {% for p in applications %}
                                                     <tr>
                                                         <td class="cell">{{ forloop.counter }}</td>
-                                                        <td class="cell"><span class="truncate">{{ application.employee }}</span>
+                                                        <td class="cell"><span class="truncate">{{ p.employee }}</span>
                                                         </td>
-                                                        <td class="cell">{{ application.employee.huduma_centre }}</td>
+                                                        <td class="cell">{{ p.employee.huduma_centre }}</td>
                                                         <td class="cell"><span
-                                                                class="cell-data">{{ application.posting_date }}</span>
+                                                                class="cell-data">{{ p.posting_date }}</span>
                                                         </td>
                                                         <td class="cell"><span
-                                                                class="badge bg-warning">{{ application.status }}</span></td>
-                                                        <td class="cell">{{ application.no_of_days }}</td>
+                                                                class="badge bg-warning">{{ p.status }}</span></td>
+                                                        <td class="cell">{{ p.no_of_days }}</td>
                                                         <td class="cell">
                                                             <a class="btn-sm app-btn-secondary" data-id="{{ p.id }}"
                                                                data-admin-remarks="{{ p.admin_remarks|default:'N/a' }}"
@@ -475,12 +475,12 @@
                         <div class="modal-body">
                             <!-- Employee Name -->
                             <div class="mb-3">
-                                <label for="employeeName" class="form-label"><strong>Employee Name:</strong></label>
+                                <label for="employee" class="form-label"><strong>Employee Name:</strong></label>
                                 <input type="text" class="form-control form-control-sm" id="employee" readonly>
                             </div>
                             <!-- Date Applied -->
                             <div class="mb-3">
-                                <label for="postingDate" class="form-label"><strong>Date Applied:</strong></label>
+                                <label for="dateapplied" class="form-label"><strong>Date Applied:</strong></label>
                                 <input type="text" class="form-control form-control-sm" id="dateapplied" readonly>
                             </div>
                             <!-- From Date -->
@@ -574,20 +574,7 @@
                                                             <td class="cell">{{ a.admin_remarks }}</td>
                                                             <td class="cell">{{ a.admin_remarks_date }}</td>
     
-    
-                                                            <!-- <td class="cell">
-                                                                <a class="btn-sm app-btn-secondary" data-id="{{ a.id }}"
-                                                                   data-admin-remarks="{{ a.admin_remarks|default:'N/a'}}"
-                                                                   data-from-date="{{ a.from_date }}"
-    
-                                                                   data-to-date="{{ a.to_date }}"
-                                                                   data-date-applied="{{ a.posting_date }}"
-                                                                   data-status="{{ a.status }}"
-    
-                                                                   data-employee="{{ a.employee }}"
-                                                                   data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                                                                   href="#">View</a>
-                                                            </td> -->
+
                                                         </tr>
                                                     {% endfor %}
                                                 {% else %}
@@ -604,21 +591,7 @@
                                     </div>
                                     <!--//app-card-body-->
                                 </div>
-                                <!--//app-card-->
-                                <!-- <nav class="app-pagination">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav> -->
-                                <!--//app-pagination-->
+
     
                             </div>                            
                         </div>

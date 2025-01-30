@@ -338,7 +338,7 @@ def manage_employee(request):
         return redirect('permission_denied')  # You can replace this with your desired page or view
 
     # Pagination
-    paginator = Paginator(employees, 3)  # Show 5 employees per page
+    paginator = Paginator(employees, 5)  # Show 5 employees per page
     page_no = request.GET.get('page', 1)
     try:
         paginated_employees = paginator.page(page_no)
