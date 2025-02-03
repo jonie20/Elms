@@ -190,7 +190,7 @@
                                             </thead>
                                             <tbody>
                                             {% if pending %}
-                                                {% for p in applications %}
+                                                {% for p in pending %}
                                                     <tr>
                                                         <td class="cell">{{ forloop.counter }}</td>
                                                         <td class="cell"><span class="truncate">{{ p.employee }}</span>

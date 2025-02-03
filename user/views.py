@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-
+from .utils import get_financial_year
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -154,6 +154,7 @@ class DashView(View):
 
         # Calculate dynamic values
 
+        financial_year = get_financial_year()
         carry_forward_days = request.user.carry_forward_days
         sick_leave_days = request.user.sick_leave_days
         casual_leave_days = request.user.casual_leave_days
@@ -166,6 +167,7 @@ class DashView(View):
             'financial_year': '2024/2025',  # Hardcoded
             'status_filter': request.GET.get('status', 'all'),
             'dashboard_data': {
+                'financial_year': financial_year,
                 'carry_forward': carry_forward_days,
                 'sick_leave_days': sick_leave_days,
                 'casual_leave_days': casual_leave_days,
