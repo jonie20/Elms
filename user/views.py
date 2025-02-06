@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -21,6 +21,8 @@ from user.authentication import AccountAuthentication
 from user.forms import GroupForm, AssignGroupForm
 from user.models import Account, LeaveApplication, HudumaCentre
 
+def is_CEO(user):
+    return user.is_authenticated and user.is_CEO
 
 def group_required(*group_names):
     def decorator(view_func):
@@ -34,7 +36,8 @@ def group_required(*group_names):
 
     return decorator
 
-
+# @login_required
+# @user_passes_test(is_CEO, login_url='/forbidden/')
 def manage_groups(request):
     if request.method == 'POST':
         form = GroupForm(request.POST)

@@ -62,12 +62,16 @@
 					<!--//nav-link-->
 					<div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
 						<ul class="submenu-list list-unstyled">
-							<li class="submenu-item"><a class="submenu-link" href="{% url 'add-employee' %}">New
-									Employee</a></li>
-							<li class="submenu-item"><a class="submenu-link" href="{% url 'manage-employee' %}">Manage
-									Employee</a></li>
+							<li class="submenu-item"><a class="submenu-link" href="{% url 'add-employee' %}">New Employee</a></li>
+							<li class="submenu-item"><a class="submenu-link" href="{% url 'manage-employee' %}">Manage Employee</a></li>
+							{% if request.user.is_CEO %}
                             <li class="submenu-item"><a class="submenu-link" href="{% url 'manage_groups' %}">Manage Groups</a></li>
-                            <li class="submenu-item"><a class="submenu-link" href="{% url 'assign_group' %}">Assign Groups</a></li>
+							<li class="submenu-item"><a class="submenu-link" href="{% url 'assign_group' %}">Assign Groups</a></li>
+                            {% else %}
+                                        
+                            {% endif %}		
+                            <!-- <li class="submenu-item"><a class="submenu-link" href="{% url 'manage_groups' %}">Manage Groups</a></li> -->
+                            
 						</ul>
 					</div>
 				</li>
@@ -98,7 +102,9 @@
 					<!--//nav-link-->
 					<div id="submenu-3" class="collapse submenu submenu-3" data-bs-parent="#menu-accordion">
 						<ul class="submenu-list list-unstyled">
+							{% if request.user.is_CEO %}
 							<li class="submenu-item"><a class="submenu-link" href="{% url 'manage-centres' %}">Manage Centre</a></li>
+							{% endif %}
 							<li class="submenu-item"><a class="submenu-link" href="{% url 'manage-leaves' %}">Manage leaves</a>
 							</li>
 						</ul>
