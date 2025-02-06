@@ -1,72 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
-
-    <body class="app">
+<body class="app">
     <header class="app-header fixed-top">
         {% include 'board/navbar.html' %}
         {% include 'board/sidebar.html' %}
     </header>
-    <!--//app-header-->
-
     <div class="app-wrapper">
-
         <div class="app-content pt-3 p-md-3 p-lg-4">
             <div class="container-xl">
-
-                <div class="row g-3 mb-4 align-items-center justify-content-between">
-                    <div class="col-auto">
-                        <h1 class="app-page-title mb-0">Manage Employees</h1>
+                <!-- Display messages -->
+                {% if messages %}
+                    <div class="alert alert-success" role="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
                     </div>
-                    <div class="col-auto">
-                        <div class="page-utilities">
-                            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-                                <div class="col-auto">
-                                    <form class="table-search-form row gx-1 align-items-center">
-                                        <div class="col-auto">
-                                            <input type="text" id="search-orders" name="searchorders"
-                                                   class="form-control search-orders" placeholder="Search">
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn app-btn-secondary">Search</button>
-                                        </div>
-                                    </form>
-
-                                </div>
-                                <!--//col-->
-                                <div class="col-auto">
-
-                                    <select class="form-select w-auto">
-                                        <option selected value="option-1">All</option>
-                                        <option value="option-2">This week</option>
-                                        <option value="option-3">This month</option>
-                                        <option value="option-4">Last 3 months</option>
-
-                                    </select>
-                                </div>
-                                <div class="col-auto">
-                                    <a class="btn app-btn-secondary" href="#">
-                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download me-1"
-                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                  d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                            <path fill-rule="evenodd"
-                                                  d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                                        </svg>
-                                        Download CSV
-                                    </a>
-                                </div>
-                            </div>
-                            <!--//row-->
-                        </div>
-                        <!--//table-utilities-->
-                    </div>
-                    <!--//col-auto-->
-                </div>
-                <!--//row-->
-
-
+                {% endif %}
+                <!-- Rest of your template code -->
                 <div class="tab-pane" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
                     <div class="app-card app-card-orders-table shadow-sm mb-5">
                         <div class="app-card-body">
@@ -87,12 +38,10 @@
                                     </thead>
                                     <tbody>
                                     {% if employees %}
-
                                         {% for e in employees %}
                                             <tr>
                                                 <td class="cell">{{ forloop.counter }}</td>
-                                                <td class="cell"><span class="truncate">{{ e.first_name }}
-                                                    {{ e.last_name }}</span></td>
+                                                <td class="cell"><span class="truncate">{{ e.first_name }} {{ e.last_name }}</span></td>
                                                 <td class="cell">{{ e.email }}</td>
                                                 <td class="cell"><span>{{ e.total_leave_days }}</span></td>
                                                 <td class="cell"><span class="badge bg-success">Active</span></td>
@@ -100,56 +49,37 @@
                                                 <td class="cell">{{ e.huduma_centre }}</td>
                                                 <td class="cell">
                                                     {% if e.profile_picture %}
-                                                        <img src="{{ e.profile_picture }}" alt="Profile Picture"
-                                                             style="width: 25px; height: 25px;">
+                                                        <img src="{{ e.profile_picture }}" alt="Profile Picture" style="width: 25px; height: 25px;">
                                                     {% else %}
-                                                        <img src="{% static 'images/users/def.png' %}"
-                                                             alt="Default Profile Picture"
-                                                             style="width: 25px; height: 25px;">
+                                                        <img src="{% static 'images/users/def.png' %}" alt="Default Profile Picture" style="width: 25px; height: 25px;">
                                                     {% endif %}
                                                 </td>
-
-
                                                 <td class="cell">
-                                                    <a class="btn-sm app-btn-secondary" data-id="{{ e.id }}"
-                                                       data-first-name="{{ e.first_name }}"
-                                                       data-last-name="{{ e.last_name }}"
-                                                       data-phonenumber="{{ e.phone_number }}"
-                                                       data-email="{{ e.email }}"
-                                                       data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
+                                                    <a class="btn-sm app-btn-secondary" data-id="{{ e.id }}" data-first-name="{{ e.first_name }}" data-last-name="{{ e.last_name }}" data-phonenumber="{{ e.phone_number }}" data-email="{{ e.email }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">View</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
                                     {% else %}
                                         <tr>
-                                            
-                                            <td colspan="7" class="text-center">Employees found.</td>
+                                            <td colspan="7" class="text-center">No employees found.</td>
                                         </tr>
                                     {% endif %}
                                     </tbody>
                                 </table>
                             </div>
-                            <!--//table-responsive-->
-
                         </div>
-                        <!--//app-card-body-->
                     </div>
-                    <!--//app-card-->
                     <nav class="app-pagination">
                         <ul class="pagination justify-content-center">
-                            <!-- Previous Button -->
                             {% if employees.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ employees.previous_page }}" tabindex="-1"
-                                       aria-disabled="true">Previous</a>
+                                    <a class="page-link" href="?page={{ employees.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
                                 </li>
                             {% else %}
                                 <li class="page-item disabled">
                                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                                 </li>
                             {% endif %}
-
-                            <!-- Page Numbers -->
                             {% for num in employees.paginator.page_range %}
                                 {% if employees.number == num %}
                                     <li class="page-item active">
@@ -161,8 +91,6 @@
                                     </li>
                                 {% endif %}
                             {% endfor %}
-
-                            <!-- Next Button -->
                             {% if employees.has_next %}
                                 <li class="page-item">
                                     <a class="page-link" href="?page={{ employees.next_page_number }}">Next</a>
@@ -174,23 +102,11 @@
                             {% endif %}
                         </ul>
                     </nav>
-
-
-                    <!--//app-pagination-->
-                    <!--//app-pagination-->
-
                 </div>
-                <!--//tab-pane-->
             </div>
-            <!--//tab-content-->
-
-
         </div>
-        <!--//container-fluid-->
     </div>
-    <!--//app-content-->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -200,93 +116,76 @@
                 <div class="modal-body">
                     <div class="app-card app-card-settings shadow-sm p-4">
                         <div class="app-card-body">
-                            <form class="settings-form">
-                                <!-- User Information Section -->
+                            <form class="settings-form" method="post" action="">
+                                {% csrf_token %}
+                                <input type="hidden" name="user_id" id="modalUserId">
+                                <input type="hidden" name="action" id="modalAction">
                                 <div class="mb-2">
-                                    <strong>First Name: <span id="modalFirstName"></span></strong>
-                                </div>
-                                <div class="mb-2">
-                                    <strong>Last Name: <span id="modalLastName"></span></strong>
-                                </div>
-                                <div class="mb-2">
-                                    <strong>Email: <span id="modalEmail"></span></strong>
+                                    <label for="modalFirstNameInput" class="form-label">First Name</label>
+                                    <input type="text" name="first_name" id="modalFirstNameInput" class="form-control">
                                 </div>
                                 <div class="mb-2">
-                                    <strong>Phone Number: <span id="modalPhonenumber"></span></strong>
+                                    <label for="modalLastNameInput" class="form-label">Last Name</label>
+                                    <input type="text" name="last_name" id="modalLastNameInput" class="form-control">
                                 </div>
-                                <div class="mb-4">
-                                    <strong>Status:</strong>
-                                    <span class="badge bg-success">Active</span>
+                                <div class="mb-2">
+                                    <label for="modalEmailInput" class="form-label">Email</label>
+                                    <input type="email" name="email" id="modalEmailInput" class="form-control">
                                 </div>
-
-                                <!-- Status Selection Section -->
-                                <div class="mb-3">
-                                    <label for="setting-input-3" class="form-label">Status</label>
-                                    <select class="form-select" name="status" id="setting-input-3" aria-label="Status">
-                                        <option selected value="">Select Status</option>
-                                        {% for centre in huduma_centre %}
-                                            <option value="{{ centre.id }}">{{ centre.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                <div class="mb-2">
+                                    <label for="modalPhonenumberInput" class="form-label">Phone Number</label>
+                                    <input type="text" name="phone_number" id="modalPhonenumberInput" class="form-control">
                                 </div>
-
-                                <!-- Action Buttons -->
                                 <div class="row justify-content-between">
                                     <div class="col-auto">
-                                        <a class="btn app-btn-primary" href="#">Update Status</a>
+                                        <button type="submit" class="btn app-btn-primary" onclick="setAction('update')">Update</button>
                                     </div>
                                     <div class="col-auto">
-                                        <a class="btn app-btn-secondary" href="#">Cancel Plan</a>
+                                        <button type="submit" class="btn btn-danger" onclick="confirmDelete(event)">Delete</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-
-                <!-- <div class="modal-footer">
-                            <button type="button" class="btn app-btn-secondary" data-bs-dismiss="modal"> Close</button>
-                            <button type="button" class="btn app-btn-primary">Pay Now</button>
-                        </div> -->
             </div>
         </div>
     </div>
-
     <footer class="app-footer">
         <div class="container text-center py-3">
-            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart"
-                                                                                       style="color: #fb866a;"></i> by
-                <a class="app-link" href="http://themes.3rdwavemedia.com"
-                   target="_blank">Nandi Dev</a> for Huduma</small>
-
+            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="app-link" href="http://themes.3rdwavemedia.com" target="_blank">Nandi Dev</a> for Huduma</small>
         </div>
     </footer>
-    <!--//app-footer-->
+</body>
+<script>
+    const staticBackdropModal = document.getElementById('staticBackdrop');
 
-    </body>
-    <!--//app-wrapper-->
-    <script>
-        // JavaScript to handle modal data population
-        const staticBackdropModal = document.getElementById('staticBackdrop');
+    staticBackdropModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const userId = button.getAttribute('data-id');
+        const firstName = button.getAttribute('data-first-name');
+        const lastName = button.getAttribute('data-last-name');
+        const email = button.getAttribute('data-email');
+        const phoneNumber = button.getAttribute('data-phonenumber');
 
-        staticBackdropModal.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            const button = event.relatedTarget;
+        document.getElementById('modalUserId').value = userId;
+        document.getElementById('modalFirstNameInput').value = firstName;
+        document.getElementById('modalLastNameInput').value = lastName;
+        document.getElementById('modalEmailInput').value = email;
+        document.getElementById('modalPhonenumberInput').value = phoneNumber;
+    });
 
-            // Extract data from attributes
-            const firstname = button.getAttribute('data-first-name');
-            const lastname = button.getAttribute('data-last-name');
-            const email = button.getAttribute('data-email');
-            const phonenumber = button.getAttribute('data-phonenumber');
+    function setAction(action) {
+        document.getElementById('modalAction').value = action;
+    }
 
-
-            // Update modal content
-            document.getElementById('modalFirstName').textContent = firstname;
-            document.getElementById('modalLastName').textContent = lastname;
-            document.getElementById('modalPhonenumber').textContent = phonenumber;
-            document.getElementById('modalEmail').textContent = email;
-        });
-    </script>
+    function confirmDelete(event) {
+        event.preventDefault();
+        if (confirm('Are you sure you want to delete this user?')) {
+            setAction('delete');
+            event.target.closest('form').submit();
+        }
+    }
+</script>
 {% endblock %}
-{% block title %}Home{% endblock %}
+{% block title %}Manage Employees{% endblock %}

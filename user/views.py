@@ -326,21 +326,36 @@ def board(request):
 def manage_employee(request):
     # Check if the user is a superuser or belongs to the allowed groups
     if request.user.is_superuser or request.user.is_CEO:
-        # Superuser (admin) has access to everything
         employees = Account.objects.all().order_by('-id')
     elif request.user.groups.filter(name__in=['Manager', 'CEO', 'Admin']).exists():
-        # Check if user is part of the 'Manager', 'CEO', or 'Admin' groups
-        if request.user.huduma_centre:  # Ensure the user has a 'huduma_centre' assigned
+        if request.user.huduma_centre:
             employees = Account.objects.filter(huduma_centre=request.user.huduma_centre).order_by('-id')
         else:
-            # If the user doesn't have a 'huduma_centre', handle it appropriately
-            return redirect('no_huduma_centre')  # Replace with an appropriate page or message
+            return redirect('no_huduma_centre')
     else:
-        # Redirect users who are not allowed
-        return redirect('permission_denied')  # You can replace this with your desired page or view
+        return redirect('permission_denied')
+
+    # Handle user update and deletion
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        action = request.POST.get('action')
+        user = get_object_or_404(Account, id=user_id)
+
+        if action == 'update':
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
+            user.email = request.POST.get('email')
+            user.phone_number = request.POST.get('phone_number')
+            user.save()
+            messages.success(request, f'User {user.first_name} updated successfully.')
+        elif action == 'delete':
+            user.delete()
+            messages.success(request, f'User {user.first_name} Deleted successfully.')
+
+        return redirect('manage-employee')
 
     # Pagination
-    paginator = Paginator(employees, 5)  # Show 5 employees per page
+    paginator = Paginator(employees, 5)
     page_no = request.GET.get('page', 1)
     try:
         paginated_employees = paginator.page(page_no)
@@ -348,6 +363,7 @@ def manage_employee(request):
         paginated_employees = paginator.page(1)
     except EmptyPage:
         paginated_employees = paginator.page(paginator.num_pages)
+
     return render(request, 'board/manageEmpl.html', {'employees': paginated_employees})
 
 
