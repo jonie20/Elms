@@ -13,7 +13,10 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 class AssignGroupForm(forms.Form):
-    user = forms.ModelChoiceField(queryset= Account.objects.all(), label="Select User")
-    group = forms.ModelChoiceField(queryset=Group.objects.all(), label="Select Group")
+    user = forms.ModelChoiceField(queryset= Account.objects.all(), label="Select User", widget=forms.Select(attrs={'class': 'form-control'}))
+    group = forms.ModelChoiceField(queryset=Group.objects.all(), label="Select Group", widget=forms.Select(attrs={'class': 'form-control'}))
