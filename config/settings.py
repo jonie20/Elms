@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yl1(94@n#0&hm21y5svz5y9iuxj14ox5)+fi8j@pgwn%lx(w#('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG =True
+ALLOWED_HOSTS = []
 # settings.py
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -36,7 +36,7 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'johnstonekipkosgei31@gmail.com'
 EMAIL_HOST_PASSWORD = 'imoomzklojkynvvf'
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -136,7 +136,7 @@ MEDIA_URL = '/media/'
 
 
 LOGIN_URL = ''  # This specifies where users will be redirected if they are not logged in
- 
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
