@@ -35,5 +35,24 @@
     <!-- Page Specific JS -->
     <script src="{% static 'js/app.js'%}"></script>
 
+!-- JavaScript to track user activity -->
+    <script>
+        let timeout;
 
+        function resetTimeout() {
+            clearTimeout(timeout);
+            timeout = setTimeout(logout, 300000); // 5 minutes in milliseconds
+        }
+
+        function logout() {
+            window.location.href = "{% url 'logout-iew' %}";
+        }
+
+        // Reset timeout on user interactions
+        document.onload = resetTimeout;
+        document.onmousemove = resetTimeout;
+        document.onkeypress = resetTimeout;
+        document.onclick = resetTimeout;
+        document.onscroll = resetTimeout;
+    </script>
 </html> 

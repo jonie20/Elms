@@ -154,3 +154,6 @@ MESSAGE_TAGS = {
     messages.WARNING: "alert-warning",
     messages.INFO: "alert-info",
 }
+# Session settings
+SESSION_COOKIE_AGE = 300  # 5 minutes in seconds
+SESSION_SAVE_EVERY_REQUEST = True

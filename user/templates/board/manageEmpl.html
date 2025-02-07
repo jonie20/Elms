@@ -10,13 +10,7 @@
         <div class="app-content pt-3 p-md-3 p-lg-4">
             <div class="container-xl">
                 <!-- Display messages -->
-                {% if messages %}
-                    <div class="alert alert-success" role="alert">
-                        {% for message in messages %}
-                            <p>{{ message }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                {% include 'alerts.html' %}
                 <!-- Rest of your template code -->
                 <div class="tab-pane" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
                     <div class="app-card app-card-orders-table shadow-sm mb-5">
