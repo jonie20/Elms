@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee3c3541-5630-4c8c-8edc-2ed41e2fab89" name="Changes" comment="clearing cookies after 5 minutes">
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/templates/board/sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/board/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/board/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +59,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
     "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/user/PycharmProjects/Elms/user/static/images",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -157,7 +157,7 @@
       <workItem from="1738647569794" duration="661000" />
       <workItem from="1738762665327" duration="800000" />
       <workItem from="1738819707867" duration="8887000" />
-      <workItem from="1738855001474" duration="2258000" />
+      <workItem from="1738855001474" duration="3633000" />
     </task>
     <task id="LOCAL-00001" summary="MODEL">
       <option name="closed" value="true" />
