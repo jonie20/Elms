@@ -34,7 +34,7 @@ Installation & Setup
 
 Clone the repository
 
-git clone https://github.com/yourusername/employee-leave-management.git
+git clone https://github.com/jonie20/Elms.git
 cd employee-leave-management
 
 Create & Activate Virtual Environment
